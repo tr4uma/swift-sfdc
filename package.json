@@ -1,0 +1,51 @@
+{
+	"name": "swift-sfdc",
+	"displayName": "swift-sfdc",
+	"description": "A VSCode extension for increased productivity while working on salesforce.com projects",
+	"version": "0.0.1",
+	"publisher": "tr4uma",
+	"engines": {
+		"vscode": "^1.35.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"workspaceContains:**/package.xml"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "SwiftSfdc.createField",
+				"title": "SwiftSFDC: Create Field"
+			}
+		]
+	},
+	"menus": {
+		"commandPalette": [
+			{
+				"command": "SwiftSfdc.createField",
+				"when": "true"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.42",
+		"@types/node": "^10.12.21",
+		"@types/xml2js": "^0.4.4",
+		"tslint": "^5.12.1",
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.28"
+	},
+	"dependencies": {
+		"xml2js": "^0.4.19"
+	}
+}
