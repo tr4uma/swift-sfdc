@@ -1,31 +1,16 @@
-# swift-sfdc README
+# 💫 swift-sfdc README
 
-This is the README for your extension "swift-sfdc". After writing up a brief description, we recommend including the following sections.
+Do you ever feel like working with the salesforce.com platform wastes a lot of time?
+Are you tired of the standard 6-steps salesforce wizard for field creation?
+
+The <b>swift-sfdc</b> vscode extension aims to make working with the salesforce.com platform <b>lightning fast</b>!
+<b>Stop waiting for metadata retrieval and start creating the metadata directly in your local project</b>, without waiting ages to synchronize it from the cloud!
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Field Creation
 
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+Interact with the XML definition of your SObjects and start creating fields directly in those metadata. Stop with the  annoying and boring metadata retrieval process and start pushing them straightforward to the platform.
 
 ## Known Issues
 
@@ -33,19 +18,11 @@ Calling out known issues can help limit users opening duplicate issues against y
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+This is just the beginning
 
-### 1.0.0
+### 0.0.1
 
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Field Creation
 
 -----------------------------------------------------------------------------------------------------------
 
