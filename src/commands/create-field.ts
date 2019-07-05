@@ -7,6 +7,7 @@ import { PathLike } from 'fs'
 import SObjectFieldType from './interfaces/SObjectFieldType'
 import SObjectFieldDefinition from './interfaces/SObjectFieldDefinition'
 import SObjectFieldBuilders from './interfaces/SObjectFieldBuilders'
+import { parseBooleans } from 'xml2js/lib/processors'
 
 // SFDC Metadata types selection
 async function pickSObjectType(sObjectDefinitions: SObjectFile[]): Promise<SObjectFile | undefined> {
@@ -14,15 +15,13 @@ async function pickSObjectType(sObjectDefinitions: SObjectFile[]): Promise<SObje
   return res
 }
 
-async function fieldCreationWizard(relatableSObjects: string[]): Promise<SObjectFieldDefinition> {
+async function fieldCreationWizard(otherFields: SObjectFieldDefinition[], availableSObjectsList: string[]): Promise<SObjectFieldDefinition> {
+  let forbiddenApiNames = otherFields.map(field => field.fullName)
   return new Promise(async (resolve, reject) => {
     try {
       const pickedFieldType = await pickSObjectFieldType()
-      console.log(pickedFieldType)
-
-      let obj: SObjectFieldDefinition = await SObjectFieldBuilders[pickedFieldType]()
-
-
+      let obj: SObjectFieldDefinition = await SObjectFieldBuilders[pickedFieldType](forbiddenApiNames, availableSObjectsList)
+      resolve(obj)
     } catch (err) {
       reject(err)
     }
@@ -32,7 +31,7 @@ async function fieldCreationWizard(relatableSObjects: string[]): Promise<SObject
 async function pickSObjectFieldType(): Promise<SObjectFieldType> {
   return new Promise(async (resolve, reject) => {
     const res: any | undefined = await vscode.window.showQuickPick(Object.keys(SObjectFieldType).map(el => { return { label: el, value: el } }), { ignoreFocusOut: true, placeHolder: 'Select a Field Type' })
-    res !== undefined ? resolve(res.value) : reject('Nothing was selected')
+    res !== undefined ? resolve(res.value) : reject('Field Creation Aborted')
   })
 }
 
@@ -52,7 +51,7 @@ async function readSObjectDefinitionFile(objDef: SObjectFile): Promise<any> {
   return new Promise(async (resolve, reject) => {
     const filePath = path.join(objDef.folder.toString(), objDef.fileName)
     const fileContent = fs.readFileSync(filePath, { encoding: 'utf-8' })
-    const xmlParser = new xml2js.Parser()
+    const xmlParser = new xml2js.Parser({ explicitArray: false, valueProcessors: [parseBooleans] })
     try {
       const parsedFile: any = await new Promise((resolve, reject) => {
         xmlParser.parseString(fileContent, (err: any, result: any) => {
@@ -82,14 +81,15 @@ export default async function createField() {
   const pickedSObject: SObjectFile | undefined = await pickSObjectType(SObjectFiles)
   if (pickedSObject) {
     try {
-      const [objectDefinition, sobjectFieldDefinition]: any = await Promise.all([
-        fieldCreationWizard(SObjectFiles.map(file => file.label)),
-        readSObjectDefinitionFile(pickedSObject)])
 
-      console.log(objectDefinition)
-      vscode.window.showInformationMessage('file read from system')
+      const objectDefinition: any = await readSObjectDefinitionFile(pickedSObject)
+      const sobjectFieldDefinition: any = await fieldCreationWizard(objectDefinition.CustomObject.fields, SObjectFiles.map(file => file.label))
 
-      //writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
+      objectDefinition.CustomObject.fields.push(sobjectFieldDefinition)
+      objectDefinition.CustomObject.fields.sort((a: any, b: any) => { return a.fullName.localeCompare(b.fullName) })
+      //vscode.window.showInformationMessage('file read from system')
+
+      writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
 
     } catch (err) {
       vscode.window.showErrorMessage(err)

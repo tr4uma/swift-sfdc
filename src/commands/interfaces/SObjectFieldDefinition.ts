@@ -1,12 +1,10 @@
-import SObjectFieldType from "./SObjectFieldType";
-
 interface SObjectFieldDefinition {
   fullName: string
   //defaultValue: string
-  //externalId: string
+  externalId: boolean
   label: string
   type: string
-  required: string
+  required: boolean
   //valueSet: string
   //formula: string
   //formulaTreatBlanksAs: string
