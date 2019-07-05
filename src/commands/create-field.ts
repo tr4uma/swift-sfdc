@@ -8,8 +8,6 @@ import SObjectFieldType from './interfaces/SObjectFieldType'
 import SObjectFieldDefinition from './interfaces/SObjectFieldDefinition'
 import SObjectFieldBuilders from './interfaces/SObjectFieldBuilders'
 
-//import { firstCharLowerCase } from 'xml2js/lib/processors'
-
 // SFDC Metadata types selection
 async function pickSObjectType(sObjectDefinitions: SObjectFile[]): Promise<SObjectFile | undefined> {
   const res: SObjectFile | undefined = await vscode.window.showQuickPick(sObjectDefinitions, { ignoreFocusOut: true, placeHolder: 'Select an SObject Type' })
@@ -22,7 +20,7 @@ async function fieldCreationWizard(relatableSObjects: string[]): Promise<SObject
       const pickedFieldType = await pickSObjectFieldType()
       console.log(pickedFieldType)
 
-      let obj: SObjectFieldDefinition = await SObjectFieldBuilders.checkboxBuilder()
+      let obj: SObjectFieldDefinition = await SObjectFieldBuilders[pickedFieldType]()
 
 
     } catch (err) {
@@ -31,7 +29,7 @@ async function fieldCreationWizard(relatableSObjects: string[]): Promise<SObject
   })
 }
 
-async function pickSObjectFieldType(): Promise<string> {
+async function pickSObjectFieldType(): Promise<SObjectFieldType> {
   return new Promise(async (resolve, reject) => {
     const res: any | undefined = await vscode.window.showQuickPick(Object.keys(SObjectFieldType).map(el => { return { label: el, value: el } }), { ignoreFocusOut: true, placeHolder: 'Select a Field Type' })
     res !== undefined ? resolve(res.value) : reject('Nothing was selected')
