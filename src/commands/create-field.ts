@@ -6,7 +6,7 @@ import SObjectFile from './interfaces/SObjectFile'
 import { PathLike } from 'fs'
 import SObjectFieldType from './interfaces/SObjectFieldType'
 import SObjectFieldDefinition from './interfaces/SObjectFieldDefinition'
-import SObjectFieldBuilders from './interfaces/SObjectFieldBuilders'
+import SObjectFieldBuilders from './builders/SObjectFieldBuilders'
 import { parseBooleans } from 'xml2js/lib/processors'
 
 // SFDC Metadata types selection
