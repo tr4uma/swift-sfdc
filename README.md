@@ -10,7 +10,7 @@ The <b>swift-sfdc</b> vscode extension aims to make working with the salesforce.
 
 ### Field Creation
 
-Interact with the XML definition of your SObjects and start creating fields directly in those metadata. Stop with the  annoying and boring metadata retrieval process and start pushing them straightforward to the platform.
+Interact with the XML definition of your SObjects and start creating fields directly in your local metadata. Stop with the annoying and boring retrieval process and start pushing metadate straightforward to the platform, saving one round-trip!
 
 ## Known Issues
 

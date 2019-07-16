@@ -1,13 +1,14 @@
 import * as vscode from 'vscode'
 import * as xml2js from 'xml2js'
+import { parseBooleans } from 'xml2js/lib/processors'
 import * as path from 'path'
 import * as fs from 'fs'
-import SObjectFile from './interfaces/SObjectFile'
+import SObjectFile from './interfaces/sObjects/SObjectFile'
 import { PathLike } from 'fs'
-import SObjectFieldType from './interfaces/SObjectFieldType'
-import SObjectFieldDefinition from './interfaces/SObjectFieldDefinition'
+import SObjectFieldType from './interfaces/sObjects/SObjectFieldType'
+import SObjectFieldDefinition from './interfaces/sObjects/SObjectFieldDefinition'
 import SObjectFieldBuilders from './builders/SObjectFieldBuilders'
-import { parseBooleans } from 'xml2js/lib/processors'
+
 
 // SFDC Metadata types selection
 async function pickSObjectType(sObjectDefinitions: SObjectFile[]): Promise<SObjectFile | undefined> {

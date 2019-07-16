@@ -19,6 +19,10 @@
 			{
 				"command": "SwiftSfdc.createField",
 				"title": "💫 SwiftSFDC: Create Field"
+			},
+			{
+				"command": "SwiftSfdc.configureProfiles",
+				"title": "💫 SwiftSFDC: Configure Profiles"
 			}
 		]
 	},
@@ -26,6 +30,10 @@
 		"commandPalette": [
 			{
 				"command": "SwiftSfdc.createField",
+				"when": "true"
+			},
+			{
+				"command": "SwiftSfdc.configureProfiles",
 				"when": "true"
 			}
 		]
