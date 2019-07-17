@@ -2,7 +2,7 @@ import ConfigManager from '../config/config-manager'
 import * as path from 'path'
 import * as vscode from 'vscode'
 import * as fs from 'fs'
-import ProfileFile from './interfaces/profiles/ProfileFile'
+import ProfileFile from './metadatamanagement/profiles/structures/ProfileFile'
 import * as xml2js from 'xml2js'
 import { parseBooleans } from 'xml2js/lib/processors'
 

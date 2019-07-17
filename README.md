@@ -10,7 +10,13 @@ The <b>swift-sfdc</b> vscode extension aims to make working with the salesforce.
 
 ### Field Creation
 
-Interact with the XML definition of your SObjects and start creating fields directly in your local metadata. Stop with the annoying and boring retrieval process and start pushing metadate straightforward to the platform, saving one round-trip!
+#### Field Creation: XML Definition Manipulation
+
+Interact with the XML definition of your SObjects and start creating fields directly in your local metadata. Stop with the annoying and boring retrieval process and start pushing metadata straightforward to the platform, saving one round-trip!
+
+#### Field Creation: Default Profiles!
+
+You have finally managed to save time by creating those custom fields straightforward into the SFDC metadata files. Now you can configure field-level security directly on the profiles metadata, saving even <b>more</b> time! 🎉🎉🎉
 
 ## Known Issues
 
@@ -20,9 +26,15 @@ Calling out known issues can help limit users opening duplicate issues against y
 
 This is just the beginning
 
+### 0.0.2
+
+Profile Configuration
+
 ### 0.0.1
 
 Field Creation
+
+
 
 -----------------------------------------------------------------------------------------------------------
 

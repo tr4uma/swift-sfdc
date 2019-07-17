@@ -1,4 +1,4 @@
-import * as SObjectFieldTemplates from '../interfaces/sObjects/SObjectFieldTemplates'
+import * as SObjectFieldTemplates from '../metadatamanagement/sObjects/structures/SObjectFieldTemplates'
 import Prompt from './prompts/Prompts'
 
 async function checkboxBuilder(forbiddenApiNames: string[], availableSObjectsList: string[]): Promise<SObjectFieldTemplates.Checkbox> {

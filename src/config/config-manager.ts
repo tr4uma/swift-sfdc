@@ -16,7 +16,7 @@ export default class ConfigManager {
 
   private constructor() { this.init() }
 
-  private getCfgPath = () => path.join(vscode.workspace.rootPath as string, '.💫sfdc.json')
+  private getCfgPath = () => path.join(vscode.workspace.rootPath as string, '.swift💫sfdc.json')
 
   private _currentConfig: any = undefined
 
@@ -60,11 +60,8 @@ export default class ConfigManager {
           return ConfigManager.getInstance().storeConfig(target)
         }
       }
-
       this._currentConfig = new Proxy(config, handler)
-
       this.storeConfig(this._currentConfig)
-
     }
   }
 }
