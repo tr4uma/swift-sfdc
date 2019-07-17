@@ -5,6 +5,7 @@ import SObjectFieldType from './metadatamanagement/sObjects/structures/SObjectFi
 import SObjectFieldDefinition from './metadatamanagement/sObjects/structures/SObjectFieldDefinition'
 import SObjectFieldBuilders from './builders/SObjectFieldBuilders'
 import sObjFileMgr from './metadatamanagement/sObjects/SObjectFilesManager'
+import profilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
 
 
 // SFDC Metadata types selection
@@ -32,8 +33,6 @@ async function pickSObjectFieldType(): Promise<SObjectFieldType> {
     res !== undefined ? resolve(res.value) : reject('Field Creation Aborted')
   })
 }
-
-// File I/O
 
 // Main functionality
 export default async function createField() {
