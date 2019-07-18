@@ -5,6 +5,7 @@ import SObjectFieldType from './metadatamanagement/sObjects/structures/SObjectFi
 import SObjectFieldDefinition from './metadatamanagement/sObjects/structures/SObjectFieldDefinition'
 import SObjectFieldBuilders from './builders/SObjectFieldBuilders'
 import sObjFileMgr from './metadatamanagement/sObjects/SObjectFilesManager'
+import profilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
 
 
 // SFDC Metadata types selection
@@ -33,8 +34,6 @@ async function pickSObjectFieldType(): Promise<SObjectFieldType> {
   })
 }
 
-// File I/O
-
 // Main functionality
 export default async function createField() {
   const SObjectFiles = await sObjFileMgr.getObjectsFromMetaData()
@@ -46,7 +45,7 @@ export default async function createField() {
       const sObjectFieldDefinition: SObjectFieldDefinition = await fieldCreationWizard(objectDefinition.CustomObject.fields, SObjectFiles.map(file => file.label))
 
       objectDefinition.CustomObject.fields.push(sObjectFieldDefinition)
-      objectDefinition.CustomObject.fields.sort((a: any, b: any) => { return a.fullName.localeCompare(b.fullName) })
+      //objectDefinition.CustomObject.fields.sort((a: any, b: any) => { return a.fullName.localeCompare(b.fullName) })
 
       sObjFileMgr.writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
 

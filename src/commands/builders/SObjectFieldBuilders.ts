@@ -9,7 +9,6 @@ async function checkboxBuilder(forbiddenApiNames: string[], availableSObjectsLis
       let required: boolean = await Prompt.isRequired()
       let defaultValue: any = await Prompt.defaultValue([{ label: 'False', value: false }, { label: 'True', value: true }])
       resolve(new SObjectFieldTemplates.Checkbox(apiName, label, required, defaultValue))
-      console.log(label, apiName, required)
     } catch (err) {
       reject('Field Creation Aborted')
     }
@@ -26,7 +25,6 @@ async function textBuilder(forbiddenApiNames: string[], availableSObjectsList: s
       let externalId: boolean = await Prompt.isExternalId()
       let unique: boolean = await Prompt.isUnique()
       resolve(new SObjectFieldTemplates.Text(apiName, label, externalId, required, length, unique))
-      console.log(label, apiName, required)
     } catch (err) {
       reject('Field Creation Aborted')
     }

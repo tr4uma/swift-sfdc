@@ -52,10 +52,10 @@ export default class ConfigManager {
         config = new SwiftSfdcConfiguration()
       }
       const handler: ProxyHandler<SwiftSfdcConfiguration> = {
-        get(target: SwiftSfdcConfiguration, property: PropertyKey) {
+        get(target: any, property: PropertyKey) {
           return target[property]
         },
-        set(target: SwiftSfdcConfiguration, property: PropertyKey, value: any): boolean {
+        set(target: any, property: PropertyKey, value: any): boolean {
           target[property] = value
           return ConfigManager.getInstance().storeConfig(target)
         }
