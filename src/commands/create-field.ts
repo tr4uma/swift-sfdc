@@ -6,6 +6,8 @@ import SObjectFieldDefinition from './metadatamanagement/sObjects/structures/SOb
 import SObjectFieldBuilders from './builders/SObjectFieldBuilders'
 import sObjFileMgr from './metadatamanagement/sObjects/SObjectFilesManager'
 import profilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
+import ConfigManager from '../config/config-manager';
+import AccessType from './metadatamanagement/profiles/structures/AccessType';
 
 
 // SFDC Metadata types selection
@@ -49,9 +51,9 @@ export default async function createField() {
 
       sObjFileMgr.writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
 
-      //updateProfiles()
+      profilesFileMgr.updateProfilesVisibilityForField(ConfigManager.getInstance().getConfig().defaultProfiles || [], [{ sObject: pickedSObject, fields: [sObjectFieldDefinition] }], AccessType.edit)
 
-      vscode.window.showInformationMessage(`Field '${sObjectFieldDefinition.fullName}' was created on SObject ${pickedSObject.label}`)
+      vscode.window.showInformationMessage(`Field '${sObjectFieldDefinition.fullName}' was created on SObject ${pickedSObject.label} and enabled as editable for profiles: ${(ConfigManager.getInstance().getConfig().defaultProfiles || []).map(p => p.label)}`)
 
     } catch (err) {
       vscode.window.showErrorMessage(err)
