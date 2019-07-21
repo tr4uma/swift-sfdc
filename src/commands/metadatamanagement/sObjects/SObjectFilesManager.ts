@@ -1,4 +1,4 @@
-import SObjectFile from "./structures/SObjectFile"
+import SObjectFile from './structures/SObjectFile'
 import * as path from 'path'
 import * as vscode from 'vscode'
 import * as fs from 'fs'
