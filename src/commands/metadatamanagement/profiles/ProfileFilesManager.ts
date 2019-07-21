@@ -66,7 +66,7 @@ export default {
         this.writeProfileDefinitionFile(path.join(profileFile.folder.toString(), profileFile.fileName), prof)
       })
     } catch (err) {
-      throw Error('Error updating field-level security for profiles')
+      throw Error(`Error updating field-level security for profiles: ${profiles.map(prf => prf.label)}`)
     }
   }
 }
