@@ -31,4 +31,47 @@ async function textBuilder(forbiddenApiNames: string[], availableSObjectsList: s
   })
 }
 
-export default { Checkbox: checkboxBuilder, Text: textBuilder }
+async function emailBuilder(forbiddenApiNames: string[], availableSObjectsList: string[]): Promise<SObjectFieldTemplates.Email> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let label: string = await Prompt.label()
+      let apiName: string = await Prompt.apiName(label, forbiddenApiNames)
+      let required: boolean = await Prompt.isRequired()
+      let externalId: boolean = await Prompt.isExternalId()
+      let unique: boolean = await Prompt.isUnique()
+      resolve(new SObjectFieldTemplates.Email(apiName, label, externalId, required, unique))
+    } catch (err) {
+      reject('Field Creation Aborted')
+    }
+  })
+}
+
+async function dateBuilder(forbiddenApiNames: string[], availableSObjectsList: string[]): Promise<SObjectFieldTemplates.Date> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let label: string = await Prompt.label()
+      let apiName: string = await Prompt.apiName(label, forbiddenApiNames)
+      let required: boolean = await Prompt.isRequired()
+      let externalId: boolean = await Prompt.isExternalId()
+      resolve(new SObjectFieldTemplates.Date(apiName, label, externalId, required))
+    } catch (err) {
+      reject('Field Creation Aborted')
+    }
+  })
+}
+
+async function datetimeBuilder(forbiddenApiNames: string[], availableSObjectsList: string[]): Promise<SObjectFieldTemplates.DateTime> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let label: string = await Prompt.label()
+      let apiName: string = await Prompt.apiName(label, forbiddenApiNames)
+      let required: boolean = await Prompt.isRequired()
+      let externalId: boolean = await Prompt.isExternalId()
+      resolve(new SObjectFieldTemplates.DateTime(apiName, label, externalId, required))
+    } catch (err) {
+      reject('Field Creation Aborted')
+    }
+  })
+}
+
+export default { Checkbox: checkboxBuilder, Text: textBuilder, Email: emailBuilder, Date: dateBuilder, DateTime: datetimeBuilder }
