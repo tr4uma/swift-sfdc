@@ -88,4 +88,18 @@ async function phoneBuilder(forbiddenApiNames: string[], availableSObjectsList: 
   })
 }
 
-export default { Checkbox: checkboxBuilder, Text: textBuilder, Email: emailBuilder, Date: dateBuilder, DateTime: datetimeBuilder, Phone: phoneBuilder }
+async function textAreaBuilder(forbiddenApiNames: string[], availableSObjectsList: string[]): Promise<SObjectFieldTemplates.TextArea> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let label: string = await Prompt.label()
+      let apiName: string = await Prompt.apiName(label, forbiddenApiNames)
+      let required: boolean = await Prompt.isRequired()
+      let externalId: boolean = await Prompt.isExternalId()
+      resolve(new SObjectFieldTemplates.TextArea(apiName, label, externalId, required))
+    } catch (err) {
+      reject('Field Creation Aborted')
+    }
+  })
+}
+
+export default { Checkbox: checkboxBuilder, Text: textBuilder, Email: emailBuilder, Date: dateBuilder, DateTime: datetimeBuilder, Phone: phoneBuilder, TextArea: textAreaBuilder }
