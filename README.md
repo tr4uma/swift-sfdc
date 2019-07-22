@@ -26,6 +26,20 @@ Calling out known issues can help limit users opening duplicate issues against y
 
 This is just the beginning
 
+### 0.0.3
+
+Supporting these types for field creation:
+* Checkbox
+* Date
+* DateTime
+* Email
+* Text
+* TextArea
+* LongTextArea
+* Phone
+
+And updating configured profiles sith their FLS
+
 ### 0.0.2
 
 Profile Configuration
