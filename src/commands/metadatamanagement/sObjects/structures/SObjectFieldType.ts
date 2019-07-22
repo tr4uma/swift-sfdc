@@ -5,7 +5,7 @@ enum SObjectFieldType {
   Email = 'Email',
   Text = 'Text',
   //Lookup = 'Lookup',
-  //LongTextArea = 'LongTextArea',
+  LongTextArea = 'LongTextArea',
   Date = 'Date',
   //MultiselectPicklist = 'MultiselectPicklist',
   DateTime = 'DateTime',

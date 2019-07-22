@@ -5,5 +5,6 @@ import Date from './field-templates/Date'
 import DateTime from './field-templates/Date'
 import Phone from './field-templates/Phone'
 import TextArea from './field-templates/TextArea'
+import LongTextArea from './field-templates/LongTextArea';
 
-export { Checkbox, Text, Email, Date, DateTime, Phone, TextArea }
+export { Checkbox, Text, Email, Date, DateTime, Phone, TextArea, LongTextArea }

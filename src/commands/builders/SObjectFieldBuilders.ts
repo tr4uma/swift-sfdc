@@ -20,7 +20,7 @@ async function textBuilder(forbiddenApiNames: string[], availableSObjectsList: s
     try {
       let label: string = await Prompt.label()
       let apiName: string = await Prompt.apiName(label, forbiddenApiNames)
-      let length: string = await Prompt.stringLength()
+      let length: string = await Prompt.stringLength(1, 255, 255)
       let required: boolean = await Prompt.isRequired()
       let externalId: boolean = await Prompt.isExternalId()
       let unique: boolean = await Prompt.isUnique()
@@ -102,4 +102,19 @@ async function textAreaBuilder(forbiddenApiNames: string[], availableSObjectsLis
   })
 }
 
-export default { Checkbox: checkboxBuilder, Text: textBuilder, Email: emailBuilder, Date: dateBuilder, DateTime: datetimeBuilder, Phone: phoneBuilder, TextArea: textAreaBuilder }
+async function longTextAreaBuilder(forbiddenApiNames: string[], availableSObjectsList: string[]): Promise<SObjectFieldTemplates.LongTextArea> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let label: string = await Prompt.label()
+      let apiName: string = await Prompt.apiName(label, forbiddenApiNames)
+      let length: string = await Prompt.stringLength(256, 131072, 32768)
+      let required: boolean = await Prompt.isRequired()
+      let externalId: boolean = await Prompt.isExternalId()
+      resolve(new SObjectFieldTemplates.LongTextArea(apiName, label, externalId, required, length))
+    } catch (err) {
+      reject('Field Creation Aborted')
+    }
+  })
+}
+
+export default { Checkbox: checkboxBuilder, Text: textBuilder, Email: emailBuilder, Date: dateBuilder, DateTime: datetimeBuilder, Phone: phoneBuilder, TextArea: textAreaBuilder, LongTextArea: longTextAreaBuilder }

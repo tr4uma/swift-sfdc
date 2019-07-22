@@ -41,17 +41,17 @@ async function promptForFieldApiName(label: string, forbiddenApiNames: string[])
   })
 }
 
-async function promptForStringLength(): Promise<string> {
-  //Removing spaces and accented characters and appending __c
+async function promptForStringLength(minLength: number, maxLength: number, defaultValue: number): Promise<string> {
   return new Promise(async (resolve, reject) => {
+    const regex = new RegExp(`^[0-9]{${minLength.toString().length},${maxLength.toString().length}}$`)
     const fieldLength: string | undefined = await vscode.window.showInputBox({
       ignoreFocusOut: true,
-      placeHolder: 'Insert Text Field Maximum Length',
-      value: '255',
-      valueSelection: [0, 3],
-      prompt: 'Insert a number between 1 and 255',
+      placeHolder: 'Insert Field Maximum Length',
+      value: defaultValue.toString(),
+      valueSelection: [0, defaultValue.toString().length],
+      prompt: `Insert a number between ${minLength} and ${maxLength}`,
       validateInput: (value: string): string | undefined => {
-        if (!(/^[0-9]{1,3}$/.test(value)) || Number(value) > 255 || Number(value) < 1) { return 'Only a number between 1 and 255 is allowed.' }
+        if (!(regex.test(value)) || Number(value) > maxLength || Number(value) < minLength) { return `Only a number between ${minLength} and ${maxLength} is allowed.` }
         return undefined
       }
     })
