@@ -1,7 +1,7 @@
 enum SObjectFieldType {
   Checkbox = 'Checkbox',
   //Picklist = 'Picklist',
-  //Number = 'Number',
+  Number = 'Number',
   Email = 'Email',
   Text = 'Text',
   //Lookup = 'Lookup',
