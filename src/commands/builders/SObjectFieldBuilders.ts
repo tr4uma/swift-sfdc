@@ -94,7 +94,7 @@ async function textAreaBuilder(forbiddenApiNames: string[], availableSObjectsLis
       let label: string = await Prompt.label()
       let apiName: string = await Prompt.apiName(label, forbiddenApiNames)
       let required: boolean = await Prompt.isRequired()
-      let externalId: boolean = await Prompt.isExternalId()
+      let externalId: boolean = false
       resolve(new SObjectFieldTemplates.TextArea(apiName, label, externalId, required))
     } catch (err) {
       reject('Field Creation Aborted')
@@ -109,7 +109,7 @@ async function longTextAreaBuilder(forbiddenApiNames: string[], availableSObject
       let apiName: string = await Prompt.apiName(label, forbiddenApiNames)
       let length: string = await Prompt.stringLength(256, 131072, 32768)
       let required: boolean = await Prompt.isRequired()
-      let externalId: boolean = await Prompt.isExternalId()
+      let externalId: boolean = false
       resolve(new SObjectFieldTemplates.LongTextArea(apiName, label, externalId, required, length))
     } catch (err) {
       reject('Field Creation Aborted')
