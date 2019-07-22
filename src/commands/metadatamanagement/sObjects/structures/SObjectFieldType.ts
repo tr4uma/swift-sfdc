@@ -10,7 +10,7 @@ enum SObjectFieldType {
   //MultiselectPicklist = 'MultiselectPicklist',
   DateTime = 'DateTime',
   //TextArea = 'TextArea',
-  //Phone = 'Phone',
+  Phone = 'Phone',
   //Summary = 'Summary',
   //Hierarchy = 'Hierarchy',
   //AutoNumber = 'AutoNumber',
