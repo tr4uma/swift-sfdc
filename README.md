@@ -1,7 +1,7 @@
 # 💫 swift-sfdc README
 
 Do you ever feel like working with the salesforce.com platform wastes a lot of time?
-Are you tired of the standard 6-steps salesforce wizard for field creation?
+Are you tired of switching continuously between the IDE and the platform to create (and retrieve!) the metadata you need?
 
 The <b>swift-sfdc</b> vscode extension aims to make working with the salesforce.com platform <b>lightning fast</b>!
 <b>Stop waiting for metadata retrieval and start creating the metadata directly in your local project</b>, without waiting ages to synchronize it from the cloud!
