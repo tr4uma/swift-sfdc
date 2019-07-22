@@ -1,14 +1,13 @@
-import ProfileFile from "./structures/ProfileFile"
+import ProfileFile from './structures/ProfileFile'
 import * as path from 'path'
 import * as vscode from 'vscode'
 import * as fs from 'fs'
 import * as xml2js from 'xml2js'
 import { parseBooleans } from 'xml2js/lib/processors'
 import { PathLike } from "fs"
-import SObjectFieldDefinition from "../sObjects/structures/SObjectFieldDefinition";
-import AccessType from "./structures/AccessType";
-import SObjectFieldBuilders from "../../builders/SObjectFieldBuilders";
-import SObjectFile from "../sObjects/structures/SObjectFile";
+import SObjectFieldDefinition from '../sObjects/structures/SObjectFieldDefinition'
+import AccessType from './structures/AccessType'
+import SObjectFile from '../sObjects/structures/SObjectFile'
 
 export default {
 
@@ -67,7 +66,7 @@ export default {
         this.writeProfileDefinitionFile(path.join(profileFile.folder.toString(), profileFile.fileName), prof)
       })
     } catch (err) {
-      throw Error('Error updating field-level security for profiles')
+      throw Error(`Error updating field-level security for profiles: ${profiles.map(prf => prf.label)}`)
     }
   }
 }

@@ -1,41 +1,10 @@
-import SObjectFieldDefinition from "./SObjectFieldDefinition"
-class Checkbox implements SObjectFieldDefinition {
-  fullName: string
-  defaultValue: boolean
-  externalId: boolean
-  label: string
-  type: string
-  required: boolean
+import Text from './field-templates/Text'
+import Checkbox from './field-templates/Checkbox'
+import Email from './field-templates/Email'
+import Date from './field-templates/Date'
+import DateTime from './field-templates/Date'
+import Phone from './field-templates/Phone'
+import TextArea from './field-templates/TextArea'
+import LongTextArea from './field-templates/LongTextArea';
 
-  constructor(fullName: string, label: string, required: boolean, defaultValue: boolean) {
-    this.fullName = fullName
-    this.externalId = false
-    this.label = label
-    this.type = 'Checkbox'
-    this.required = required
-    this.defaultValue = defaultValue
-  }
-}
-
-class Text implements SObjectFieldDefinition {
-  fullName: string
-  externalId: boolean
-  label: string
-  type: string
-  required: boolean
-  length: string
-  unique: boolean
-
-  constructor(fullName: string, label: string, externalId: boolean, required: boolean, length: string, unique: boolean) {
-    this.fullName = fullName
-    this.externalId = externalId
-    this.label = label
-    this.type = 'Text'
-    this.required = required
-    this.length = length
-    this.unique = unique
-  }
-
-}
-
-export { Checkbox, Text }
+export { Checkbox, Text, Email, Date, DateTime, Phone, TextArea, LongTextArea }
