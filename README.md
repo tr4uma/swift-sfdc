@@ -38,7 +38,7 @@ Supporting these types for field creation:
 * LongTextArea
 * Phone
 
-And updating configured profiles sith their FLS
+And updating configured profiles with their FLS
 
 ### 0.0.2
 
