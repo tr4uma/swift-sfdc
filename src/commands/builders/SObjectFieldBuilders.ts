@@ -117,4 +117,21 @@ async function longTextAreaBuilder(forbiddenApiNames: string[], availableSObject
   })
 }
 
-export default { Checkbox: checkboxBuilder, Text: textBuilder, Email: emailBuilder, Date: dateBuilder, DateTime: datetimeBuilder, Phone: phoneBuilder, TextArea: textAreaBuilder, LongTextArea: longTextAreaBuilder }
+async function numberBuilder(forbiddenApiNames: string[], availableSObjectsList: string[]): Promise<SObjectFieldTemplates.Number> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let label: string = await Prompt.label()
+      let apiName: string = await Prompt.apiName(label, forbiddenApiNames)
+      let [precision, scale] = await Prompt.precisionAndScale()
+      let required: boolean = await Prompt.isRequired()
+      let externalId: boolean = await Prompt.isExternalId()
+      let unique: boolean = await Prompt.isUnique()
+      resolve(new SObjectFieldTemplates.Number(apiName, label, externalId, required, unique, precision, scale))
+    } catch (err) {
+      reject('Field Creation Aborted')
+    }
+  })
+}
+
+
+export default { Checkbox: checkboxBuilder, Text: textBuilder, Email: emailBuilder, Date: dateBuilder, DateTime: datetimeBuilder, Phone: phoneBuilder, TextArea: textAreaBuilder, LongTextArea: longTextAreaBuilder, Number: numberBuilder }
