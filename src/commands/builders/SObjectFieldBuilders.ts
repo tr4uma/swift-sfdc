@@ -1,5 +1,6 @@
 import * as SObjectFieldTemplates from '../metadatamanagement/sObjects/structures/SObjectFieldTemplates'
 import Prompt from './prompts/Prompts'
+import { lookup } from 'dns';
 
 async function checkboxBuilder(forbiddenApiNames: string[], availableSObjectsList: string[]): Promise<SObjectFieldTemplates.Checkbox> {
   return new Promise(async (resolve, reject) => {
@@ -133,5 +134,21 @@ async function numberBuilder(forbiddenApiNames: string[], availableSObjectsList:
   })
 }
 
+async function lookupBuilder(forbiddenApiNames: string[], availableSObjectsList: string[]): Promise<SObjectFieldTemplates.Lookup> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let label: string = await Prompt.label()
+      let apiName: string = await Prompt.apiName(label, forbiddenApiNames)
+      let required: boolean = await Prompt.isRequired()
+      let referenceTo: string = await Prompt.lookupTarget(availableSObjectsList)
+      let relationshipLabel = await Prompt.relationshipLabel()
+      let relationshipName = await Prompt.relationshipApiName(relationshipLabel)
+      resolve(new SObjectFieldTemplates.Lookup(apiName, label, required, referenceTo, relationshipLabel, relationshipName))
+    } catch (err) {
+      reject('Field Creation Aborted')
+    }
+  })
+}
 
-export default { Checkbox: checkboxBuilder, Text: textBuilder, Email: emailBuilder, Date: dateBuilder, DateTime: datetimeBuilder, Phone: phoneBuilder, TextArea: textAreaBuilder, LongTextArea: longTextAreaBuilder, Number: numberBuilder }
+
+export default { Checkbox: checkboxBuilder, Text: textBuilder, Email: emailBuilder, Date: dateBuilder, DateTime: datetimeBuilder, Phone: phoneBuilder, TextArea: textAreaBuilder, LongTextArea: longTextAreaBuilder, Number: numberBuilder, Lookup: lookupBuilder }

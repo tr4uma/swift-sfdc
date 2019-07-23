@@ -104,6 +104,47 @@ async function promptForPrecisionAndScale(): Promise<[number, number]> {
   })
 }
 
+async function promptForLookupTarget(availableSObjectsList: string[]): Promise<string> {
+  return new Promise(async (resolve, reject) => {
+    const pickedSObj = await vscode.window.showQuickPick(availableSObjectsList.map(obj => {
+      return { label: obj, value: obj }
+    }), { ignoreFocusOut: true, placeHolder: 'Relationship target SObject?' })
+    pickedSObj ? resolve(pickedSObj.value) : reject('Field Creation Aborted')
+  })
+}
+
+async function promptForRelationshipLabel(): Promise<string> {
+  return new Promise(async (resolve, reject) => {
+    const relLabel: string | undefined = await vscode.window.showInputBox({
+      ignoreFocusOut: true,
+      placeHolder: 'Insert Child Relationship Label',
+      validateInput: (value: string): string | undefined => {
+        return value.length > 40 || value.length < 1 ? 'Child Relationship Label cannot exceed 40 characters' : undefined
+      }
+    })
+    relLabel ? resolve(relLabel) : reject('Field Creation Aborted')
+  })
+}
+
+async function promptForRelationshipApiName(label: string): Promise<string> {
+  const escaped = label.normalize('NFD').replace(/[\u0300-\u036f]|\s*/g, '')
+
+  return new Promise(async (resolve, reject) => {
+    const relApiName: string | undefined = await vscode.window.showInputBox({
+      ignoreFocusOut: true,
+      placeHolder: 'Insert Child Relationship Api Name',
+      value: escaped,
+      valueSelection: [0, escaped.length - 1],
+      prompt: 'Only normal letters and underscores are allowed.',
+      validateInput: (value: string): string | undefined => {
+        if (!(/^[[a-zA-Z0-9_]{3,40}(?<!_)$/.test(value))) { return 'Invalid Api Name. Must only use Uppercase or Lowercase Letters, numbers, underscores (\'_\') and cannot exceed 40 characters' }
+        return undefined
+      }
+    })
+    relApiName ? resolve(relApiName) : reject('Field Creation Aborted')
+  })
+}
+
 export default {
   defaultValue: promptForDefaultValue,
   isUnique: promptForUniqueField,
@@ -112,5 +153,8 @@ export default {
   apiName: promptForFieldApiName,
   isRequired: promptForRequiredField,
   label: promptForFieldLabel,
-  precisionAndScale: promptForPrecisionAndScale
+  precisionAndScale: promptForPrecisionAndScale,
+  lookupTarget: promptForLookupTarget,
+  relationshipLabel: promptForRelationshipLabel,
+  relationshipApiName: promptForRelationshipApiName
 }
