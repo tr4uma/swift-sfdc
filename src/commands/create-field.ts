@@ -47,6 +47,11 @@ export default async function createField() {
       const sObjectFieldDefinition: SObjectFieldDefinition = await fieldCreationWizard(objectDefinition.CustomObject.fields, SObjectFiles.map(file => file.label))
 
       objectDefinition.CustomObject.fields.push(sObjectFieldDefinition)
+      objectDefinition.CustomObject.fields.sort((a: any, b: any) => {
+        if (a.fullName > b.fullName) { return 1 }
+        else if (a.fullName < b.fullName) { return -1 }
+        return 0
+      })
       //objectDefinition.CustomObject.fields.sort((a: any, b: any) => { return a.fullName.localeCompare(b.fullName) })
 
       sObjFileMgr.writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
