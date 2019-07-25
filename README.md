@@ -31,6 +31,9 @@ Calling out known issues can help limit users opening duplicate issues against y
 
 This is just the beginning
 
+### 0.0.5
+Minor bugfixes
+
 ### 0.0.4
 Supporting these types for field creation:
 * Lookup
