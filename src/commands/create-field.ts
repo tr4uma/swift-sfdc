@@ -8,6 +8,7 @@ import sObjFileMgr from './metadatamanagement/sObjects/SObjectFilesManager'
 import profilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
 import ConfigManager from '../config/config-manager';
 import AccessType from './metadatamanagement/profiles/structures/AccessType';
+import utils from './metadatamanagement/utils';
 
 
 // SFDC Metadata types selection
@@ -47,7 +48,7 @@ export default async function createField() {
       const sObjectFieldDefinition: SObjectFieldDefinition = await fieldCreationWizard(objectDefinition.CustomObject.fields, SObjectFiles.map(file => file.label))
 
       objectDefinition.CustomObject.fields.push(sObjectFieldDefinition)
-      //objectDefinition.CustomObject.fields.sort((a: any, b: any) => { return a.fullName.localeCompare(b.fullName) })
+      objectDefinition.CustomObject.fields.sort(utils.sortFieldsByApiName)
 
       sObjFileMgr.writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
 
