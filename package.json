@@ -1,61 +1,65 @@
 {
-	"name": "swift-sfdc",
-	"displayName": "swift-sfdc",
-	"description": "A VSCode extension for increased productivity while working on salesforce.com projects",
-	"version": "0.0.1",
-	"publisher": "tr4uma",
-	"engines": {
-		"vscode": "^1.35.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"workspaceContains:**/package.xml"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "SwiftSfdc.createField",
-				"title": "💫 SwiftSFDC: Create Field"
-			},
-			{
-				"command": "SwiftSfdc.configureProfiles",
-				"title": "💫 SwiftSFDC: Configure Profiles"
-			}
-		]
-	},
-	"menus": {
-		"commandPalette": [
-			{
-				"command": "SwiftSfdc.createField",
-				"when": "true"
-			},
-			{
-				"command": "SwiftSfdc.configureProfiles",
-				"when": "true"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "npm run compile && node ./node_modules/vscode/bin/test"
-	},
-	"devDependencies": {
-		"@types/lodash": "^4.14.136",
-		"@types/mocha": "^2.2.42",
-		"@types/node": "^10.14.12",
-		"@types/xml2js": "^0.4.4",
-		"tslint": "^5.12.1",
-		"typescript": "^3.5.3",
-		"vscode": "^1.1.28"
-	},
-	"dependencies": {
-		"lodash": "^4.17.14",
-		"xml2js": "^0.4.19"
-	}
+  "name": "swift-sfdc",
+  "displayName": "swift-sfdc",
+  "description": "A VSCode extension for increased productivity while working on salesforce.com projects",
+  "version": "0.0.1",
+  "publisher": "tr4uma",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tr4uma/swift-sfdc.git"
+  },
+  "engines": {
+    "vscode": "^1.35.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/package.xml"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "SwiftSfdc.createField",
+        "title": "💫 SwiftSFDC: Create Field"
+      },
+      {
+        "command": "SwiftSfdc.configureProfiles",
+        "title": "💫 SwiftSFDC: Configure Profiles"
+      }
+    ]
+  },
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "SwiftSfdc.createField",
+        "when": "true"
+      },
+      {
+        "command": "SwiftSfdc.configureProfiles",
+        "when": "true"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.136",
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^10.14.12",
+    "@types/xml2js": "^0.4.4",
+    "tslint": "^5.12.1",
+    "typescript": "^3.5.3",
+    "vscode": "^1.1.28"
+  },
+  "dependencies": {
+    "lodash": "^4.17.14",
+    "xml2js": "^0.4.19"
+  }
 }
