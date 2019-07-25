@@ -34,11 +34,11 @@
     "commandPalette": [
       {
         "command": "SwiftSfdc.createField",
-        "when": "true"
+        "when": "swift-sfdc-active"
       },
       {
         "command": "SwiftSfdc.configureProfiles",
-        "when": "true"
+        "when": "swift-sfdc-active"
       }
     ]
   },
