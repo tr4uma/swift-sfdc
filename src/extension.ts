@@ -23,6 +23,8 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.createField', cmd.createField))
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfiles', cmd.configureProfiles))
 
+  vscode.commands.executeCommand('setContext', 'swift-sfdc-active', true)
+
 }
 
 // this method is called when your extension is deactivated
