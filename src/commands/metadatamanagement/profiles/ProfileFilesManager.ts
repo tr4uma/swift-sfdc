@@ -8,6 +8,7 @@ import { PathLike } from "fs"
 import SObjectFieldDefinition from '../sObjects/structures/SObjectFieldDefinition'
 import AccessType from './structures/AccessType'
 import SObjectFile from '../sObjects/structures/SObjectFile'
+import utils from '../utils';
 
 export default {
 
@@ -63,6 +64,7 @@ export default {
             })
           })
         })
+        prof.Profile.fieldPermissions.sort(utils.sortFieldsByApiName)
         this.writeProfileDefinitionFile(path.join(profileFile.folder.toString(), profileFile.fileName), prof)
       })
     } catch (err) {
