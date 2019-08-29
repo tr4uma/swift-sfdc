@@ -29,7 +29,14 @@ Calling out known issues can help limit users opening duplicate issues against y
 
 ## Release Notes
 
-This is just the beginning
+### 0.0.8
+Extension Icon
+
+### 0.0.7
+License and webpack configuration
+
+### 0.0.6
+Minor bugfixes
 
 ### 0.0.5
 Minor bugfixes
