@@ -4,6 +4,7 @@
   "description": "A VSCode extension for increased productivity while working on salesforce.com projects",
   "version": "0.0.7",
   "publisher": "tr4uma",
+  "icon": "images/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/tr4uma/swift-sfdc.git"
