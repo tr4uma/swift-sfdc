@@ -8,6 +8,14 @@ The <b>swift-sfdc</b> vscode extension aims to make working with the salesforce.
 
 Integrate with other extensions, like ForceCode or MavensMate, to deploy the updated xml files directly to salesforce and create the best developer experience!
 
+## How it works
+swift-sfdc is designed to interact with the standard salesforce project structure which you can download using tools like ant, mavensmate or forcecode, where every metadata type is contained within a subfolder of the /src/ root folder:
+
+![Folder Structure](/images/folder_structure.png)
+
+Given this folder structure to your project, the extension is then able to interact with the XML metadata definitions provided by the salesforce API.
+You're then free to use your favourite deployment tool to update the code in your org. (Metadata deployment coming soon!)
+
 ## Features
 
 ### Field Creation
@@ -16,10 +24,13 @@ Allows default and basic field configuration to save time while developing apex 
 #### Field Creation: XML Definition Manipulation
 
 Interact with the XML definition of your SObjects and start creating fields directly in your local metadata. Stop with the annoying and boring retrieval process and start pushing metadata straightforward to the platform, saving one round-trip!
+Keeping in mind the fast-development goal, fields are usually created with a default configuration. For example, String fields are always created with a default length of 255.
+You'll be free to edit the XML metadata on your own or change those configurations directly in salesforce and retrieve them again.
 
 #### Field Creation: Default Profiles!
 
 You have finally managed to save time by creating those custom fields straightforward into the SFDC metadata files. Now you can configure field-level security directly on the profiles metadata, saving even <b>more</b> time! 🎉🎉🎉
+<b>Field-level security defaults to edit.<b>This is done on purpose to allow developers saving time, leaving these kind of configurations to admins later on, which will simply have to edit the existing configuration instead of creating it from scratch.
 
 ## Known Issues
 
