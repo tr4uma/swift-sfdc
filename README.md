@@ -30,7 +30,7 @@ You'll be free to edit the XML metadata on your own or change those configuratio
 #### Field Creation: Default Profiles!
 
 You have finally managed to save time by creating those custom fields straightforward into the SFDC metadata files. Now you can configure field-level security directly on the profiles metadata, saving even <b>more</b> time! 🎉🎉🎉
-<b>Field-level security defaults to edit.<b>This is done on purpose to allow developers saving time, leaving these kind of configurations to admins later on, which will simply have to edit the existing configuration instead of creating it from scratch.
+<b>Field-level security defaults to edit.</b>This is done on purpose to allow developers saving time, leaving these kind of configurations to admins later on, which will simply have to edit the existing configuration instead of creating it from scratch.
 
 ## Known Issues
 
