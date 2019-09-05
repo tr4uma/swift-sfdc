@@ -64,11 +64,24 @@ export default {
             })
           })
         })
-        prof.Profile.fieldPermissions.sort(utils.sortFieldsByApiName)
+        prof.Profile.fieldPermissions.sort((a: any, b: any) => utils.sortFieldsByField(a, b, 'fullName'))
         this.writeProfileDefinitionFile(path.join(profileFile.folder.toString(), profileFile.fileName), prof)
       })
     } catch (err) {
       throw Error(`Error updating field-level security for profiles: ${profiles.map(prf => prf.label)}`)
+    }
+  },
+
+  updateProfilesApexClassesAccess: async function (profile: ProfileFile, enabledClasses: string[]) {
+    try {
+      const prof = await this.readProfileDefinitionFile(profile)
+      prof.Profile.classAccesses.forEach((classAccess: { enabled: boolean; apexClass: string; }) => {
+        classAccess.enabled = enabledClasses.includes(classAccess.apexClass)
+      })
+      prof.Profile.classAccesses.sort((a: any, b: any) => utils.sortFieldsByField(a, b, 'apexClass'))
+      this.writeProfileDefinitionFile(path.join(profile.folder.toString(), profile.fileName), prof)
+    } catch (err) {
+      throw Error(`Error updating Apex Class Access for profile: ${profile.label}`)
     }
   }
 }
