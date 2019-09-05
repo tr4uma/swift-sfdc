@@ -32,6 +32,10 @@ You'll be free to edit the XML metadata on your own or change those configuratio
 You have finally managed to save time by creating those custom fields straightforward into the SFDC metadata files. Now you can configure field-level security directly on the profiles metadata, saving even <b>more</b> time! 🎉🎉🎉
 <b>Field-level security defaults to edit.</b>This is done on purpose to allow developers saving time, leaving these kind of configurations to admins later on, which will simply have to edit the existing configuration instead of creating it from scratch.
 
+#### Profiles Configuration: Apex Classes access
+
+In-editor manipulation of your profiles' files to manage apex classes access
+
 ## Known Issues
 
 Calling out known issues can help limit users opening duplicate issues against your extension.
@@ -39,6 +43,12 @@ Calling out known issues can help limit users opening duplicate issues against y
 ---------------------------------------------------------------------------------------------------------------
 
 ## Release Notes
+
+### 0.0.10
+Profiles Apex Classes Access management
+
+### 0.0.9
+Minor fixes and new icon
 
 ### 0.0.8
 Extension Icon
