@@ -5,9 +5,9 @@ import SObjectFieldType from './metadatamanagement/sObjects/structures/SObjectFi
 import SObjectFieldDefinition from './metadatamanagement/sObjects/structures/SObjectFieldDefinition'
 import SObjectFieldBuilders from './builders/SObjectFieldBuilders'
 import sObjFileMgr from './metadatamanagement/sObjects/SObjectFilesManager'
-import profilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
+import ProfilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
 import ConfigManager from '../config/config-manager';
-import AccessType from './metadatamanagement/profiles/structures/AccessType';
+import AccessType from './metadatamanagement/profiles/structures/AccessType'
 import utils from './metadatamanagement/utils';
 
 
@@ -48,11 +48,11 @@ export default async function createField() {
       const sObjectFieldDefinition: SObjectFieldDefinition = await fieldCreationWizard(objectDefinition.CustomObject.fields, SObjectFiles.map(file => file.label))
 
       objectDefinition.CustomObject.fields.push(sObjectFieldDefinition)
-      objectDefinition.CustomObject.fields.sort(utils.sortFieldsByApiName)
+      objectDefinition.CustomObject.fields.sort((a: any, b: any) => utils.sortFieldsByField(a, b, 'fullName'))
 
       sObjFileMgr.writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
 
-      profilesFileMgr.updateProfilesVisibilityForField(ConfigManager.getInstance().getConfig().defaultProfiles || [], [{ sObject: pickedSObject, fields: [sObjectFieldDefinition] }], AccessType.edit)
+      ProfilesFileMgr.updateProfilesVisibilityForField(ConfigManager.getInstance().getConfig().defaultProfiles || [], [{ sObject: pickedSObject, fields: [sObjectFieldDefinition] }], AccessType.edit)
 
       vscode.window.showInformationMessage(`Field '${sObjectFieldDefinition.fullName}' was created on SObject ${pickedSObject.label} and enabled as editable for profiles: ${(ConfigManager.getInstance().getConfig().defaultProfiles || []).map(p => p.label)}`)
 

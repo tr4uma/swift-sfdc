@@ -23,11 +23,18 @@
     "commands": [
       {
         "command": "SwiftSfdc.createField",
-        "title": "💫 SwiftSFDC: Create Field"
+        "title": "Create Field",
+        "category": "💫 SwiftSFDC"
       },
       {
-        "command": "SwiftSfdc.configureProfiles",
-        "title": "💫 SwiftSFDC: Configure Profiles"
+        "command": "SwiftSfdc.configureDefaultFieldsProfiles",
+        "title": "Create Field > Configure Default Profiles",
+        "category": "💫 SwiftSFDC"
+      },
+      {
+        "command": "SwiftSfdc.configureProfilesApexClasses",
+        "title": "Configure Profiles > Apex Classes",
+        "category": "💫 SwiftSFDC"
       }
     ],
     "menus": {
@@ -37,7 +44,11 @@
           "when": "swift-sfdc-active"
         },
         {
-          "command": "SwiftSfdc.configureProfiles",
+          "command": "SwiftSfdc.configureDefaultFieldsProfiles",
+          "when": "swift-sfdc-active"
+        },
+        {
+          "command": "SwiftSfdc.configureProfilesApexClasses",
           "when": "swift-sfdc-active"
         }
       ]
@@ -105,7 +116,7 @@
     "webpack-dev": "webpack --mode development --watch",
     "test-compile": "tsc -p ./",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "watch": "npm run webpack-dev && tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },
