@@ -1,7 +1,9 @@
 import createField from './create-field'
-import configureProfiles from './configure-profiles'
+import configureDefaultFieldsProfiles from './configure-default-fields-profiles'
+import configureProfilesApexClasses from './configure-profiles-apex-classes'
 
 export default {
   createField,
-  configureProfiles
+  configureDefaultFieldsProfiles,
+  configureProfilesApexClasses
 }

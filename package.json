@@ -2,7 +2,7 @@
   "name": "swift-sfdc",
   "displayName": "swift-sfdc",
   "description": "A VSCode extension for increased productivity while working on salesforce.com projects",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "publisher": "tr4uma",
   "icon": "images/icon.png",
   "repository": {
@@ -23,23 +23,90 @@
     "commands": [
       {
         "command": "SwiftSfdc.createField",
-        "title": "💫 SwiftSFDC: Create Field"
+        "title": "Create Field",
+        "category": "💫 SwiftSFDC"
       },
       {
-        "command": "SwiftSfdc.configureProfiles",
-        "title": "💫 SwiftSFDC: Configure Profiles"
+        "command": "SwiftSfdc.configureDefaultFieldsProfiles",
+        "title": "Create Field > Configure Default Profiles",
+        "category": "💫 SwiftSFDC"
+      },
+      {
+        "command": "SwiftSfdc.configureProfilesApexClasses",
+        "title": "Configure Profiles > Apex Classes",
+        "category": "💫 SwiftSFDC"
       }
-    ]
-  },
-  "menus": {
-    "commandPalette": [
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "SwiftSfdc.createField",
+          "when": "swift-sfdc-active"
+        },
+        {
+          "command": "SwiftSfdc.configureDefaultFieldsProfiles",
+          "when": "swift-sfdc-active"
+        },
+        {
+          "command": "SwiftSfdc.configureProfilesApexClasses",
+          "when": "swift-sfdc-active"
+        }
+      ]
+    },
+    "languages": [
       {
-        "command": "SwiftSfdc.createField",
-        "when": "swift-sfdc-active"
+        "id": "xml",
+        "aliases": [
+          "Aura"
+        ],
+        "extensions": [
+          ".cmp"
+        ]
       },
       {
-        "command": "SwiftSfdc.configureProfiles",
-        "when": "swift-sfdc-active"
+        "id": "xml",
+        "extensions": [
+          ".object",
+          ".layout",
+          ".resource",
+          ".remoteSite",
+          ".labels",
+          ".app",
+          ".dashboard",
+          ".permissionset",
+          ".workflow",
+          ".email",
+          ".profile",
+          ".scf",
+          ".queue",
+          ".reportType",
+          ".report",
+          ".weblink",
+          ".tab",
+          ".letter",
+          ".role",
+          ".homePageComponent",
+          ".homePageLayout",
+          ".objectTranslation",
+          ".flow",
+          ".datacategorygroup",
+          ".snapshot",
+          ".site",
+          ".sharingRules",
+          ".settings",
+          ".callCenter",
+          ".community",
+          ".authProvider",
+          ".customApplicationComponent",
+          ".quickAction",
+          ".approvalProcess",
+          ".app",
+          ".auradoc",
+          ".evt",
+          ".tokens",
+          ".design",
+          ".object"
+        ]
       }
     ]
   },
@@ -49,7 +116,7 @@
     "webpack-dev": "webpack --mode development --watch",
     "test-compile": "tsc -p ./",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "watch": "npm run webpack-dev && tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },
