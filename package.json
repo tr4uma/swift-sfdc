@@ -42,6 +42,11 @@
         "command": "SwiftSfdc.configureProfilesApexClasses",
         "title": "Configure Profiles > Apex Classes",
         "category": "💫 SwiftSFDC"
+      },
+      {
+        "command": "SwiftSfdc.configureProfilesApexPages",
+        "title": "Configure Profiles > Visualforce Pages",
+        "category": "💫 SwiftSFDC"
       }
     ],
     "menus": {
@@ -56,6 +61,10 @@
         },
         {
           "command": "SwiftSfdc.configureProfilesApexClasses",
+          "when": "swift-sfdc-active"
+        },
+        {
+          "command": "SwiftSfdc.configureProfilesApexPages",
           "when": "swift-sfdc-active"
         }
       ]
