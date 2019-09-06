@@ -1,5 +1,12 @@
 {
   "name": "swift-sfdc",
+  "keywords": [
+    "salesforce",
+    "force.com",
+    "xml",
+    "sfdc",
+    "productivity"
+  ],
   "displayName": "swift-sfdc",
   "description": "A VSCode extension for increased productivity while working on salesforce.com projects",
   "version": "0.0.10",
