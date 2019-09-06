@@ -83,5 +83,18 @@ export default {
     } catch (err) {
       throw Error(`Error updating Apex Class Access for profile: ${profile.label}`)
     }
+  },
+
+  updateProfilesApexPagesAccess: async function (profile: ProfileFile, enabledPages: string[]) {
+    try {
+      const prof = await this.readProfileDefinitionFile(profile)
+      prof.Profile.pageAccesses.forEach((pageAccess: { enabled: boolean; apexPage: string; }) => {
+        pageAccess.enabled = enabledPages.includes(pageAccess.apexPage)
+      })
+      prof.Profile.pageAccesses.sort((a: any, b: any) => utils.sortFieldsByField(a, b, 'apexPage'))
+      this.writeProfileDefinitionFile(path.join(profile.folder.toString(), profile.fileName), prof)
+    } catch (err) {
+      throw Error(`Error updating Visualforce Page Access for profile: ${profile.label}`)
+    }
   }
 }
