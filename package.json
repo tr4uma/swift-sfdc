@@ -1,8 +1,15 @@
 {
   "name": "swift-sfdc",
+  "keywords": [
+    "salesforce",
+    "force.com",
+    "xml",
+    "sfdc",
+    "productivity"
+  ],
   "displayName": "swift-sfdc",
   "description": "A VSCode extension for increased productivity while working on salesforce.com projects",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "publisher": "tr4uma",
   "icon": "images/icon.png",
   "repository": {
@@ -35,6 +42,11 @@
         "command": "SwiftSfdc.configureProfilesApexClasses",
         "title": "Configure Profiles > Apex Classes",
         "category": "💫 SwiftSFDC"
+      },
+      {
+        "command": "SwiftSfdc.configureProfilesApexPages",
+        "title": "Configure Profiles > Visualforce Pages",
+        "category": "💫 SwiftSFDC"
       }
     ],
     "menus": {
@@ -49,6 +61,10 @@
         },
         {
           "command": "SwiftSfdc.configureProfilesApexClasses",
+          "when": "swift-sfdc-active"
+        },
+        {
+          "command": "SwiftSfdc.configureProfilesApexPages",
           "when": "swift-sfdc-active"
         }
       ]

@@ -1,5 +1,7 @@
 # 💫 swift-sfdc README
 
+## 👉🏼 Please rate/review the extension to show support! 👈🏼 
+
 Do you ever feel like working with the salesforce.com platform wastes a lot of time?
 Are you tired of switching continuously between the IDE and the platform to create (and retrieve!) the metadata you need?
 
@@ -21,6 +23,8 @@ You're then free to use your favourite deployment tool to update the code in you
 ### Field Creation
 Allows default and basic field configuration to save time while developing apex classes
 
+![Field Creation](/images/fieldcreation.gif)
+
 #### Field Creation: XML Definition Manipulation
 
 Interact with the XML definition of your SObjects and start creating fields directly in your local metadata. Stop with the annoying and boring retrieval process and start pushing metadata straightforward to the platform, saving one round-trip!
@@ -30,11 +34,11 @@ You'll be free to edit the XML metadata on your own or change those configuratio
 #### Field Creation: Default Profiles!
 
 You have finally managed to save time by creating those custom fields straightforward into the SFDC metadata files. Now you can configure field-level security directly on the profiles metadata, saving even <b>more</b> time! 🎉🎉🎉
-<b>Field-level security defaults to edit.</b>This is done on purpose to allow developers saving time, leaving these kind of configurations to admins later on, which will simply have to edit the existing configuration instead of creating it from scratch.
+<b>Field-level security defaults to edit.</b> This is done on purpose to allow developers saving time, leaving these kind of configurations to admins later on, which will simply have to edit the existing configuration instead of creating it from scratch.
 
-#### Profiles Configuration: Apex Classes access
+#### Profiles Configuration: Apex Classes & Visualforce Pages access
 
-In-editor manipulation of your profiles' files to manage apex classes access
+In-editor manipulation of your profiles' files to manage apex classes and visualforce page accesses.
 
 ## Known Issues
 
@@ -43,6 +47,9 @@ Calling out known issues can help limit users opening duplicate issues against y
 ---------------------------------------------------------------------------------------------------------------
 
 ## Release Notes
+
+### 0.0.11
+Profiles Visualforce Pages Access management
 
 ### 0.0.10
 Profiles Apex Classes Access management
