@@ -23,6 +23,8 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureDefaultFieldsProfiles', cmd.configureDefaultFieldsProfiles))
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfilesApexClasses', cmd.configureProfilesApexClasses))
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfilesApexPages', cmd.configureProfilesApexPages))
+  context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfilesUserPermissions', cmd.configureProfilesUserPermissions))
+  context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureCrossProfileUserPermission', cmd.configureCrossProfileUserPermission))
 
   vscode.commands.executeCommand('setContext', 'swift-sfdc-active', true)
 

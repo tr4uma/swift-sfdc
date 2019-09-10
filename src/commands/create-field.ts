@@ -6,9 +6,9 @@ import SObjectFieldDefinition from './metadatamanagement/sObjects/structures/SOb
 import SObjectFieldBuilders from './builders/SObjectFieldBuilders'
 import sObjFileMgr from './metadatamanagement/sObjects/SObjectFilesManager'
 import ProfilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
-import ConfigManager from '../config/config-manager';
+import ConfigManager from '../config/config-manager'
 import AccessType from './metadatamanagement/profiles/structures/AccessType'
-import utils from './metadatamanagement/utils';
+import utils from './metadatamanagement/utils'
 
 
 // SFDC Metadata types selection
@@ -48,7 +48,7 @@ export default async function createField() {
       const sObjectFieldDefinition: SObjectFieldDefinition = await fieldCreationWizard(objectDefinition.CustomObject.fields, SObjectFiles.map(file => file.label))
 
       objectDefinition.CustomObject.fields.push(sObjectFieldDefinition)
-      objectDefinition.CustomObject.fields.sort((a: any, b: any) => utils.sortFieldsByField(a, b, 'fullName'))
+      objectDefinition.CustomObject.fields.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))
 
       sObjFileMgr.writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
 
