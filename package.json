@@ -47,6 +47,11 @@
         "command": "SwiftSfdc.configureProfilesApexPages",
         "title": "Configure Profiles > Visualforce Pages",
         "category": "💫 SwiftSFDC"
+      },
+      {
+        "command": "SwiftSfdc.configureProfilesUserPermissions",
+        "title": "Configure Profiles > User Permissions",
+        "category": "💫 SwiftSFDC"
       }
     ],
     "menus": {
@@ -65,6 +70,10 @@
         },
         {
           "command": "SwiftSfdc.configureProfilesApexPages",
+          "when": "swift-sfdc-active"
+        },
+        {
+          "command": "SwiftSfdc.configureProfilesUserPermissions",
           "when": "swift-sfdc-active"
         }
       ]

@@ -8,7 +8,8 @@ import { PathLike } from "fs"
 import SObjectFieldDefinition from '../sObjects/structures/SObjectFieldDefinition'
 import AccessType from './structures/AccessType'
 import SObjectFile from '../sObjects/structures/SObjectFile'
-import utils from '../utils';
+import utils from '../utils'
+import UserPermission from './structures/profile-fields-templates/UserPermission'
 
 export default {
 
@@ -64,7 +65,7 @@ export default {
             })
           })
         })
-        prof.Profile.fieldPermissions.sort((a: any, b: any) => utils.sortFieldsByField(a, b, 'fullName'))
+        prof.Profile.fieldPermissions.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))
         this.writeProfileDefinitionFile(path.join(profileFile.folder.toString(), profileFile.fileName), prof)
       })
     } catch (err) {
@@ -78,7 +79,7 @@ export default {
       prof.Profile.classAccesses.forEach((classAccess: { enabled: boolean; apexClass: string; }) => {
         classAccess.enabled = enabledClasses.includes(classAccess.apexClass)
       })
-      prof.Profile.classAccesses.sort((a: any, b: any) => utils.sortFieldsByField(a, b, 'apexClass'))
+      prof.Profile.classAccesses.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'apexClass'))
       this.writeProfileDefinitionFile(path.join(profile.folder.toString(), profile.fileName), prof)
     } catch (err) {
       throw Error(`Error updating Apex Class Access for profile: ${profile.label}`)
@@ -91,7 +92,44 @@ export default {
       prof.Profile.pageAccesses.forEach((pageAccess: { enabled: boolean; apexPage: string; }) => {
         pageAccess.enabled = enabledPages.includes(pageAccess.apexPage)
       })
-      prof.Profile.pageAccesses.sort((a: any, b: any) => utils.sortFieldsByField(a, b, 'apexPage'))
+      prof.Profile.pageAccesses.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'apexPage'))
+      this.writeProfileDefinitionFile(path.join(profile.folder.toString(), profile.fileName), prof)
+    } catch (err) {
+      throw Error(`Error updating Visualforce Page Access for profile: ${profile.label}`)
+    }
+  },
+
+  /**
+   * The behaviour is: we check the files and pre-selected the enabled ones.
+   * Then we show the user the entire list and we allow him/her to select the enabled ones
+   * In the end, we turn everything off, turning then on the selected ones and adding the missing ones in
+   * the original file
+   */
+  updateProfilesUserPermissions: async function (profile: ProfileFile, enabledPermissions: string[]) {
+    try {
+      const prof = await this.readProfileDefinitionFile(profile)
+
+      const userPermissions: UserPermission[] = prof.Profile.userPermissions
+      const mappedPermissions = userPermissions.reduce((acc: any, current: any) => {
+        acc[current.name] = current
+        return acc
+      }, {})
+
+      //Turn off the ones which are already in the profile metadata file
+      userPermissions.forEach(perm => {
+        perm.enabled = false
+      })
+
+      //Turning on the selected ones, adding the missing ones in the file
+      enabledPermissions.forEach((permission: string) => {
+        if (mappedPermissions[permission]) { mappedPermissions[permission].enabled = true }
+        else { userPermissions.push(new UserPermission(true, permission)) }
+      })
+
+      userPermissions.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'name'))
+
+      prof.Profile.userPermissions = userPermissions
+
       this.writeProfileDefinitionFile(path.join(profile.folder.toString(), profile.fileName), prof)
     } catch (err) {
       throw Error(`Error updating Visualforce Page Access for profile: ${profile.label}`)
