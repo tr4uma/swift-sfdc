@@ -48,13 +48,20 @@ In-editor manipulation of your profiles' files to manage apex classes and visual
 
 #### User Permissions and cross-profile User Permission management
 
-Not only you're going to be able to manage salesforce Profiles user permissions, but you'll be able to check them cross-profile as well!
+Not only you're going to be able to manage User Permissions for a Profile...
+
+![Single Profile User Permissions Management](/images/single_profile_user_permission.png)
+
+..but you'll be able to check them cross-profile as well:
+
+![Cross-Profile User Permission Management](/images/cross_profile_user_permission.png)
+
 These features are designed to simply add new permissions when they are enabled, leaving everything else as-is.
 Based on a pre-defined list of permissions, you'll be able to check a single profile for all permissions or all profiles for a specific one.
 A permission gets added to the profiles metadata files only if you enable it.
 Basically it's not going to be possible to add a piece of metadata where you disable a permission if it wasn't previously retrieved.
 It's only possible to enable new non-previously-retrieved permissions (and add them to the metadata) or disable currently enabled permissions.
-This is done to somehow emulate salesforce behaviour on metadata retrieval.
+This is done to somehow emulate salesforce behaviour on metadata retrieval and avoid polluting files with non-useful metadata.
 
 ## Known Issues
 
