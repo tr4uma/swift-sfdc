@@ -7,12 +7,12 @@ async function configureProfilesForPermission(profileMetas: { name: string, meta
 
   const options = profileMetas.map(prof => {
     let picked = false
-    let found = false
+    let found = undefined
     if (prof.meta.Profile.userPermissions) {
       found = prof.meta.Profile.userPermissions.find((perm: UserPermission) => {
         return perm.name === permission
       })
-      if (found) { picked = true }
+      if (found && found.enabled) { picked = true }
     }
     return {
       label: prof.name,
