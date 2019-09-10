@@ -5,10 +5,12 @@
 Do you ever feel like working with the salesforce.com platform wastes a lot of time?
 Are you tired of switching continuously between the IDE and the platform to create (and retrieve!) the metadata you need?
 
-The <b>swift-sfdc</b> vscode extension aims to make working with the salesforce.com platform <b>lightning fast</b>!
-<b>Stop waiting for metadata retrieval and start creating the metadata directly in your local project</b>, without waiting ages to synchronize it from the cloud!
+<b>STOP RETRIEVING, START PUSHING!</b>
 
-Integrate with other extensions, like ForceCode or MavensMate, to deploy the updated xml files directly to salesforce and create the best developer experience!
+The <b>swift-sfdc</b> vscode extension aims to make working with the salesforce.com platform <b>lightning fast</b>!
+<b>Stop waiting for metadata retrieval and start creating the metadata directly in your local project</b>, without waiting ages to synchronize it locally from the cloud!
+
+Feel free to integrate swift-sfdc with other extensions, like ForceCode or MavensMate, to deploy the updated xml files directly to salesforce and create the best developer experience!
 
 ## How it works
 swift-sfdc is designed to interact with the standard salesforce project structure which you can download using tools like ant, mavensmate or forcecode, where every metadata type is contained within a subfolder of the /src/ root folder:
@@ -21,38 +23,55 @@ You're then free to use your favourite deployment tool to update the code in you
 ## Features
 
 ### Field Creation
-Allows default and basic field configuration to save time while developing apex classes
+Allows default and basic field configuration to save time while developing apex classes.
+
+#### XML Definition Manipulation
 
 ![Field Creation](/images/fieldcreation.gif)
-
-#### Field Creation: XML Definition Manipulation
 
 Interact with the XML definition of your SObjects and start creating fields directly in your local metadata. Stop with the annoying and boring retrieval process and start pushing metadata straightforward to the platform, saving one round-trip!
 Keeping in mind the fast-development goal, fields are usually created with a default configuration. For example, String fields are always created with a default length of 255.
 You'll be free to edit the XML metadata on your own or change those configurations directly in salesforce and retrieve them again.
 
-#### Field Creation: Default Profiles!
+#### Default Profiles for FLS when creating new fields!
 
 You have finally managed to save time by creating those custom fields straightforward into the SFDC metadata files. Now you can configure field-level security directly on the profiles metadata, saving even <b>more</b> time! 🎉🎉🎉
 <b>Field-level security defaults to edit.</b> This is done on purpose to allow developers saving time, leaving these kind of configurations to admins later on, which will simply have to edit the existing configuration instead of creating it from scratch.
 
-#### Profiles Configuration: Apex Classes & Visualforce Pages access
+### Profiles Configuration
+
+Configure profiles directly in your local project.
+
+#### Apex Classes & Visualforce Pages access
 
 In-editor manipulation of your profiles' files to manage apex classes and visualforce page accesses.
 
+#### User Permissions and cross-profile User Permission management
+
+Not only you're going to be able to manage salesforce Profiles user permissions, but you'll be able to check them cross-profile as well!
+These features are designed to simply add new permissions when they are enabled, leaving everything else as-is.
+Based on a pre-defined list of permissions, you'll be able to check a single profile for all permissions or all profiles for a specific one.
+A permission gets added to the profiles metadata files only if you enable it.
+Basically it's not going to be possible to add a piece of metadata where you disable a permission if it wasn't previously retrieved.
+It's only possible to enable new non-previously-retrieved permissions (and add them to the metadata) or disable currently enabled permissions.
+This is done to somehow emulate salesforce behaviour on metadata retrieval.
+
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+User Permission list might be outdated/not complete, feel free to pull request!
 
 ---------------------------------------------------------------------------------------------------------------
 
 ## Release Notes
 
+### 0.0.12
+Profiles' User Permissions management
+
 ### 0.0.11
-Profiles Visualforce Pages Access management
+Profiles' Visualforce Pages Access management
 
 ### 0.0.10
-Profiles Apex Classes Access management
+Profiles' Apex Classes Access management
 
 ### 0.0.9
 Minor fixes and new icon

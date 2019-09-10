@@ -5547,6 +5547,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const vscode = __webpack_require__(/*! vscode */ "vscode");
+const ProfileUserPermission_1 = __webpack_require__(/*! ../../../metadatamanagement/profiles/structures/ProfileUserPermission */ "./src/commands/metadatamanagement/profiles/structures/ProfileUserPermission.ts");
 function pickOne(profiles) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
@@ -5580,10 +5581,110 @@ function pickMany(profiles, preselected = []) {
         }));
     });
 }
+function pickUserPermission() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            const res = yield vscode.window.showQuickPick(Object.keys(ProfileUserPermission_1.default), { ignoreFocusOut: true, placeHolder: 'Select the User Permission you want to check on all profiles' });
+            if (res !== undefined) {
+                resolve(res);
+            }
+            else {
+                reject('User Permission choice Aborted');
+            }
+        }));
+    });
+}
 exports.default = {
     pickOne,
-    pickMany
+    pickMany,
+    pickUserPermission
 };
+
+
+/***/ }),
+
+/***/ "./src/commands/configure-cross-profile-user-permission.ts":
+/*!*****************************************************************!*\
+  !*** ./src/commands/configure-cross-profile-user-permission.ts ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const vscode = __webpack_require__(/*! vscode */ "vscode");
+const ProfileFilesManager_1 = __webpack_require__(/*! ./metadatamanagement/profiles/ProfileFilesManager */ "./src/commands/metadatamanagement/profiles/ProfileFilesManager.ts");
+const Prompts_1 = __webpack_require__(/*! ./builders/prompts/Prompts */ "./src/commands/builders/prompts/Prompts.ts");
+function configureProfilesForPermission(profileMetas, permission) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const options = profileMetas.map(prof => {
+            let picked = false;
+            let found = false;
+            if (prof.meta.Profile.userPermissions) {
+                found = prof.meta.Profile.userPermissions.find((perm) => {
+                    return perm.name === permission;
+                });
+                if (found) {
+                    picked = true;
+                }
+            }
+            return {
+                label: prof.name,
+                picked,
+                description: `(${picked ? 'Enabled on profile' : (found ? 'Disabled on profile' : 'Not in profile')})`
+            };
+        });
+        return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+            const res = yield vscode.window.showQuickPick(options, { ignoreFocusOut: true, placeHolder: `Select all Profiles you want to enable permission ${permission}.`, canPickMany: true });
+            if (res !== undefined) {
+                resolve(res.map((el) => el.label));
+            }
+            else {
+                reject('Profiles Configuration Aborted');
+            }
+        }));
+    });
+}
+/**
+ * The behaviour is: we check the files and pre-select the enabled ones.
+ * Then we show the user the entire list and prompt for selection
+ * In the end, we turn off all the permissions already contained in the profile metadata file,
+ * turning then on the selected ones and adding the missing ones
+ * No disabled new permission is added
+ */
+function configureProfilesApexClasses() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const permission = yield Prompts_1.default.profiles.pickUserPermission();
+            const profiles = ProfileFilesManager_1.default.getObjectsFromMetaData();
+            const unpackedProfileMetas = yield Promise.all(profiles.map((prof) => __awaiter(this, void 0, void 0, function* () {
+                return {
+                    name: prof.label,
+                    meta: yield ProfileFilesManager_1.default.readProfileDefinitionFile(prof)
+                };
+            })));
+            const selectedProfiles = yield configureProfilesForPermission(unpackedProfileMetas, permission);
+            yield Promise.all(profiles.map((prof) => __awaiter(this, void 0, void 0, function* () {
+                yield ProfileFilesManager_1.default.updateProfileSinglePermission(prof, permission, selectedProfiles.includes(prof.label));
+            })));
+            vscode.window.showInformationMessage(`Updated user permissions for ${permission} on all profiles`);
+        }
+        catch (err) {
+            vscode.window.showErrorMessage(err);
+            console.log(err);
+        }
+    });
+}
+exports.default = configureProfilesApexClasses;
 
 
 /***/ }),
@@ -5788,7 +5889,9 @@ const ProfileUserPermission_1 = __webpack_require__(/*! ./metadatamanagement/pro
 function configureUserPermissions(profile, userPermissions, preselectedPermissionsMap) {
     return __awaiter(this, void 0, void 0, function* () {
         const permissionOptions = userPermissions.map(perm => {
-            return { label: perm, picked: preselectedPermissionsMap[perm] && preselectedPermissionsMap[perm].enabled };
+            let picked = preselectedPermissionsMap[perm] && preselectedPermissionsMap[perm].enabled;
+            let found = !!preselectedPermissionsMap[perm];
+            return { label: perm, picked, description: `(${picked ? 'Enabled on profile' : (found ? 'Disabled on profile' : 'Not in profile')})` };
         });
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
             const res = yield vscode.window.showQuickPick(permissionOptions, { ignoreFocusOut: true, placeHolder: `Select all user permissions for profile ${profile}.`, canPickMany: true });
@@ -5805,10 +5908,11 @@ function configureUserPermissions(profile, userPermissions, preselectedPermissio
     });
 }
 /**
- * The behaviour is: we check the files and pre-selected the enabled ones.
- * Then we show the user the entire list and we allow him/her to select the enabled ones
- * In the end, we turn everything off, turning then on the selected ones and adding the missing ones in
- * the original file
+ * The behaviour is: we check the files and pre-select the enabled ones.
+ * Then we show the user the entire list and prompt for selection
+ * In the end, we turn off all the permissions already contained in the profile metadata file,
+ * turning then on the selected ones and adding the missing ones
+ * No disabled new permission is added
  */
 function configureProfilesApexClasses() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -5935,12 +6039,14 @@ const configure_default_fields_profiles_1 = __webpack_require__(/*! ./configure-
 const configure_profiles_apex_classes_1 = __webpack_require__(/*! ./configure-profiles-apex-classes */ "./src/commands/configure-profiles-apex-classes.ts");
 const configure_profiles_apex_pages_1 = __webpack_require__(/*! ./configure-profiles-apex-pages */ "./src/commands/configure-profiles-apex-pages.ts");
 const configure_profiles_user_permissions_1 = __webpack_require__(/*! ./configure-profiles-user-permissions */ "./src/commands/configure-profiles-user-permissions.ts");
+const configure_cross_profile_user_permission_1 = __webpack_require__(/*! ./configure-cross-profile-user-permission */ "./src/commands/configure-cross-profile-user-permission.ts");
 exports.default = {
     createField: create_field_1.default,
     configureDefaultFieldsProfiles: configure_default_fields_profiles_1.default,
     configureProfilesApexClasses: configure_profiles_apex_classes_1.default,
     configureProfilesApexPages: configure_profiles_apex_pages_1.default,
-    configureProfilesUserPermissions: configure_profiles_user_permissions_1.default
+    configureProfilesUserPermissions: configure_profiles_user_permissions_1.default,
+    configureCrossProfileUserPermission: configure_cross_profile_user_permission_1.default
 };
 
 
@@ -6207,6 +6313,28 @@ exports.default = {
                         userPermissions.push(new UserPermission_1.default(true, permission));
                     }
                 });
+                userPermissions.sort((a, b) => utils_1.default.sortItemsByField(a, b, 'name'));
+                prof.Profile.userPermissions = userPermissions;
+                this.writeProfileDefinitionFile(path.join(profile.folder.toString(), profile.fileName), prof);
+            }
+            catch (err) {
+                throw Error(`Error updating Visualforce Page Access for profile: ${profile.label}`);
+            }
+        });
+    },
+    updateProfileSinglePermission: function (profile, permission, enabled) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const prof = yield this.readProfileDefinitionFile(profile);
+                const userPermissions = prof.Profile.userPermissions;
+                let perm = userPermissions.find((perm) => perm.name === permission);
+                if (perm) {
+                    perm.enabled = enabled;
+                }
+                else if (perm === undefined && enabled) {
+                    perm = new UserPermission_1.default(true, permission);
+                    userPermissions.push(perm);
+                }
                 userPermissions.sort((a, b) => utils_1.default.sortItemsByField(a, b, 'name'));
                 prof.Profile.userPermissions = userPermissions;
                 this.writeProfileDefinitionFile(path.join(profile.folder.toString(), profile.fileName), prof);
@@ -7022,6 +7150,7 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfilesApexClasses', commands_1.default.configureProfilesApexClasses));
     context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfilesApexPages', commands_1.default.configureProfilesApexPages));
     context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfilesUserPermissions', commands_1.default.configureProfilesUserPermissions));
+    context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureCrossProfileUserPermission', commands_1.default.configureCrossProfileUserPermission));
     vscode.commands.executeCommand('setContext', 'swift-sfdc-active', true);
     console.log('Congratulations, your extension "swift-sfdc" is now active!');
 }

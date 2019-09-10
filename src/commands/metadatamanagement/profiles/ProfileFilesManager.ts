@@ -134,5 +134,27 @@ export default {
     } catch (err) {
       throw Error(`Error updating Visualforce Page Access for profile: ${profile.label}`)
     }
+  },
+
+  updateProfileSinglePermission: async function (profile: ProfileFile, permission: string, enabled: boolean) {
+    try {
+      const prof = await this.readProfileDefinitionFile(profile)
+
+      const userPermissions: UserPermission[] = prof.Profile.userPermissions
+      let perm = userPermissions.find((perm) => perm.name === permission)
+
+      if (perm) { perm.enabled = enabled }
+      else if (perm === undefined && enabled) {
+        perm = new UserPermission(true, permission)
+        userPermissions.push(perm)
+      }
+
+      userPermissions.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'name'))
+      prof.Profile.userPermissions = userPermissions
+
+      this.writeProfileDefinitionFile(path.join(profile.folder.toString(), profile.fileName), prof)
+    } catch (err) {
+      throw Error(`Error updating Visualforce Page Access for profile: ${profile.label}`)
+    }
   }
 }

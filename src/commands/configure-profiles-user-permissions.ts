@@ -7,7 +7,9 @@ import UserPermission from './metadatamanagement/profiles/structures/profile-fie
 async function configureUserPermissions(profile: string, userPermissions: string[], preselectedPermissionsMap: any): Promise<any> {
 
   const permissionOptions = userPermissions.map(perm => {
-    return { label: perm, picked: preselectedPermissionsMap[perm] && preselectedPermissionsMap[perm].enabled }
+    let picked = preselectedPermissionsMap[perm] && preselectedPermissionsMap[perm].enabled
+    let found = !!preselectedPermissionsMap[perm]
+    return { label: perm, picked, description: `(${picked ? 'Enabled on profile' : (found ? 'Disabled on profile' : 'Not in profile')})` }
   })
 
   return new Promise(async (resolve, reject) => {
@@ -24,10 +26,11 @@ async function configureUserPermissions(profile: string, userPermissions: string
 }
 
 /**
- * The behaviour is: we check the files and pre-selected the enabled ones.
- * Then we show the user the entire list and we allow him/her to select the enabled ones
- * In the end, we turn everything off, turning then on the selected ones and adding the missing ones in
- * the original file
+ * The behaviour is: we check the files and pre-select the enabled ones.
+ * Then we show the user the entire list and prompt for selection
+ * In the end, we turn off all the permissions already contained in the profile metadata file, 
+ * turning then on the selected ones and adding the missing ones
+ * No disabled new permission is added
  */
 export default async function configureProfilesApexClasses() {
   try {

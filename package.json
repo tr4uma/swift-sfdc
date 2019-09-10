@@ -8,7 +8,7 @@
     "productivity"
   ],
   "displayName": "swift-sfdc",
-  "description": "A VSCode extension for increased productivity while working on salesforce.com projects",
+  "description": "A VSCode extension for increased productivity on salesforce.com projects.",
   "version": "0.0.11",
   "publisher": "tr4uma",
   "icon": "images/icon.png",
@@ -52,6 +52,11 @@
         "command": "SwiftSfdc.configureProfilesUserPermissions",
         "title": "Configure Profiles > User Permissions",
         "category": "💫 SwiftSFDC"
+      },
+      {
+        "command": "SwiftSfdc.configureCrossProfileUserPermission",
+        "title": "Configure Profiles > Cross-Profile User Permission",
+        "category": "💫 SwiftSFDC"
       }
     ],
     "menus": {
@@ -74,6 +79,10 @@
         },
         {
           "command": "SwiftSfdc.configureProfilesUserPermissions",
+          "when": "swift-sfdc-active"
+        },
+        {
+          "command": "SwiftSfdc.configureCrossProfileUserPermission",
           "when": "swift-sfdc-active"
         }
       ]

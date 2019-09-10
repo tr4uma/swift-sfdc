@@ -1,5 +1,6 @@
 import * as vscode from 'vscode'
 import ProfileFile from '../../../metadatamanagement/profiles/structures/ProfileFile'
+import ProfileUserPermission from '../../../metadatamanagement/profiles/structures/ProfileUserPermission';
 
 async function pickOne(profiles: ProfileFile[]): Promise<ProfileFile> {
   return new Promise(async (resolve, reject) => {
@@ -32,7 +33,19 @@ async function pickMany(profiles: ProfileFile[], preselected: string[] = []): Pr
   })
 }
 
+async function pickUserPermission(): Promise<string> {
+  return new Promise(async (resolve, reject) => {
+    const res: any | undefined = await vscode.window.showQuickPick(Object.keys(ProfileUserPermission), { ignoreFocusOut: true, placeHolder: 'Select the User Permission you want to check on all profiles' })
+    if (res !== undefined) {
+      resolve(res)
+    } else {
+      reject('User Permission choice Aborted')
+    }
+  })
+}
+
 export default {
   pickOne,
-  pickMany
+  pickMany,
+  pickUserPermission
 }
