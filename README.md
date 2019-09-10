@@ -50,11 +50,11 @@ In-editor manipulation of your profiles' files to manage apex classes and visual
 
 Not only you're going to be able to manage User Permissions for a Profile...
 
-![Single Profile User Permissions Management](/images/single_profile_user_permission.png)
+![Profile User Permissions](/images/user_single.png)
 
 ..but you'll be able to check them cross-profile as well:
 
-![Cross-Profile User Permission Management](/images/cross_profile_user_permission.png)
+![Cross-Profile Permission](/images/user_cross.png)
 
 These features are designed to simply add new permissions when they are enabled, leaving everything else as-is.
 Based on a pre-defined list of permissions, you'll be able to check a single profile for all permissions or all profiles for a specific one.
