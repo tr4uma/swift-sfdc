@@ -9,6 +9,8 @@ import ProfilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
 import ConfigManager from '../config/config-manager'
 import AccessType from './metadatamanagement/profiles/structures/AccessType'
 import utils from './metadatamanagement/utils'
+import Prompts from './builders/prompts/Prompts'
+import { SObjectType } from './metadatamanagement/sObjects/structures/SObjectType'
 
 
 // SFDC Metadata types selection
@@ -39,26 +41,26 @@ async function pickSObjectFieldType(): Promise<SObjectFieldType> {
 
 // Main functionality
 export default async function createField() {
-  const SObjectFiles = await sObjFileMgr.getObjectsFromMetaData()
-  const pickedSObject: SObjectFile | undefined = await pickSObjectType(SObjectFiles)
-  if (pickedSObject) {
-    try {
+  try {
+    const SObjectFiles = await sObjFileMgr.getObjectsFromMetaData()
+    const pickedSObject: SObjectFile = await Prompts.sObjects.pickOne(SObjectFiles)
 
-      const objectDefinition: any = await sObjFileMgr.readSObjectDefinitionFile(pickedSObject)
-      const sObjectFieldDefinition: SObjectFieldDefinition = await fieldCreationWizard(objectDefinition.CustomObject.fields, SObjectFiles.map(file => file.label))
+    const objectDefinition: any = await sObjFileMgr.readSObjectDefinitionFile(pickedSObject)
+    const sObjectFieldDefinition: SObjectFieldDefinition = await fieldCreationWizard(objectDefinition.CustomObject.fields, SObjectFiles.map(file => file.label))
 
-      objectDefinition.CustomObject.fields.push(sObjectFieldDefinition)
-      objectDefinition.CustomObject.fields.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))
+    objectDefinition.CustomObject.fields.push(sObjectFieldDefinition)
+    objectDefinition.CustomObject.fields.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))
 
-      sObjFileMgr.writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
+    sObjFileMgr.writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
 
+    if (pickedSObject.sObjectType === SObjectType.SObject) {
       ProfilesFileMgr.updateProfilesVisibilityForField(ConfigManager.getInstance().getConfig().defaultProfiles || [], [{ sObject: pickedSObject, fields: [sObjectFieldDefinition] }], AccessType.edit)
-
-      vscode.window.showInformationMessage(`Field '${sObjectFieldDefinition.fullName}' was created on SObject ${pickedSObject.label} and enabled as editable for profiles: ${(ConfigManager.getInstance().getConfig().defaultProfiles || []).map(p => p.label)}`)
-
-    } catch (err) {
-      vscode.window.showErrorMessage(err)
-      console.log(err)
     }
+
+    vscode.window.showInformationMessage(`Field '${sObjectFieldDefinition.fullName}' was created on SObject ${pickedSObject.label} and enabled as editable for profiles: ${(ConfigManager.getInstance().getConfig().defaultProfiles || []).map(p => p.label)}`)
+
+  } catch (err) {
+    vscode.window.showErrorMessage(err)
+    console.log(err)
   }
 }

@@ -1,9 +1,5 @@
 import { PathLike } from "fs"
-
-enum SObjectType {
-  SObject,
-  CustomMetadata
-}
+import { SObjectType } from "./SObjectType"
 
 class SObjectFile {
   label: string
