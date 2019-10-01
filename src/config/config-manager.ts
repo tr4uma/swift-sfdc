@@ -16,7 +16,7 @@ export default class ConfigManager {
 
   private constructor() { this.init() }
 
-  private getCfgPath = () => path.join(vscode.workspace.rootPath as string, '.swift💫sfdc.json')
+  private getCfgPath = () => path.join(vscode.workspace.rootPath as string, '.swift-sfdc.json')
 
   private _currentConfig: any = undefined
 

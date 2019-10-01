@@ -71,6 +71,9 @@ User Permission list might be outdated/not complete, feel free to pull request!
 
 ## Release Notes
 
+### 0.0.13
+Minor BugFixes (old systems config files compatibility)
+
 ### 0.0.12
 Profiles' User Permissions management
 
