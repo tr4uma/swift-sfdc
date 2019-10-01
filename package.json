@@ -9,7 +9,7 @@
   ],
   "displayName": "swift-sfdc",
   "description": "A VSCode extension for increased productivity on salesforce.com projects.",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "publisher": "tr4uma",
   "icon": "images/icon.png",
   "repository": {
