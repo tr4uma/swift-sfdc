@@ -123,7 +123,7 @@ export default {
       //Turning on the selected ones, adding the missing ones in the file
       enabledPermissions.forEach((permission: string) => {
         if (mappedPermissions[permission]) { mappedPermissions[permission].enabled = true }
-        else { userPermissions.push(new UserPermission(true, permission)) }
+        else { userPermissions.push({ enabled: true, name: permission }) }
       })
 
       userPermissions.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'name'))
@@ -145,7 +145,7 @@ export default {
 
       if (perm) { perm.enabled = enabled }
       else if (perm === undefined && enabled) {
-        perm = new UserPermission(true, permission)
+        perm = { enabled: true, name: permission }
         userPermissions.push(perm)
       }
 
