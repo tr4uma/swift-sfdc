@@ -10,6 +10,7 @@ import AccessType from './structures/AccessType'
 import SObjectFile from '../sObjects/structures/SObjectFile'
 import utils from '../utils'
 import UserPermission from './structures/profile-fields-templates/UserPermission'
+import FieldPermission from './structures/profile-fields-templates/FieldPermission'
 
 export default {
 
@@ -56,13 +57,23 @@ export default {
     try {
       profiles.forEach(async profileFile => {
         const prof = await this.readProfileDefinitionFile(profileFile)
+        const mappedFields = prof.Profile.fieldPermissions.reduce((acc: any, curr: FieldPermission) => {
+          acc[curr.field] = curr
+          return acc
+        }, {})
         fieldsInfos.forEach(fieldInfo => {
           fieldInfo.fields.forEach(fieldMeta => {
-            prof.Profile.fieldPermissions.push({
-              readable: accessType !== AccessType.none,
-              field: `${fieldInfo.sObject.label}.${fieldMeta.fullName}`,
-              editable: accessType === AccessType.edit
-            })
+            let currField = `${fieldInfo.sObject.label}.${fieldMeta.fullName}`
+            if (!mappedFields[currField]) {
+              prof.Profile.fieldPermissions.push({
+                readable: accessType !== AccessType.none,
+                field: `${fieldInfo.sObject.label}.${fieldMeta.fullName}`,
+                editable: accessType === AccessType.edit
+              })
+            } else {
+              mappedFields[currField].readable = accessType !== AccessType.none
+              mappedFields[currField].editable = accessType === AccessType.edit
+            }
           })
         })
         prof.Profile.fieldPermissions.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))

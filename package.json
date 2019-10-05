@@ -57,6 +57,11 @@
         "command": "SwiftSfdc.configureCrossProfileUserPermission",
         "title": "Configure Profiles > Cross-Profile User Permission",
         "category": "💫 SwiftSFDC"
+      },
+      {
+        "command": "SwiftSfdc.configureProfilesFLS",
+        "title": "Configure Profiles > Field-Level Security",
+        "category": "💫 SwiftSFDC"
       }
     ],
     "menus": {
@@ -83,6 +88,10 @@
         },
         {
           "command": "SwiftSfdc.configureCrossProfileUserPermission",
+          "when": "swift-sfdc-active"
+        },
+        {
+          "command": "SwiftSfdc.configureProfilesFLS",
           "when": "swift-sfdc-active"
         }
       ]
