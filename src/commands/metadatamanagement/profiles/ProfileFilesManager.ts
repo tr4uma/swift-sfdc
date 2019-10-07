@@ -64,6 +64,7 @@ export default {
         fieldsInfos.forEach(fieldInfo => {
           fieldInfo.fields.forEach(fieldMeta => {
             let currField = `${fieldInfo.sObject.label}.${fieldMeta.fullName}`
+            console.log(currField)
             if (!mappedFields[currField]) {
               prof.Profile.fieldPermissions.push({
                 readable: accessType !== AccessType.none,
@@ -76,7 +77,7 @@ export default {
             }
           })
         })
-        prof.Profile.fieldPermissions.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))
+        prof.Profile.fieldPermissions.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'field'))
         this.writeProfileDefinitionFile(path.join(profileFile.folder.toString(), profileFile.fileName), prof)
       })
     } catch (err) {
