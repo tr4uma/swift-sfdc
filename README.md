@@ -63,6 +63,12 @@ Basically it's not going to be possible to add a piece of metadata where you dis
 It's only possible to enable new non-previously-retrieved permissions (and add them to the metadata) or disable currently enabled permissions.
 This is done to somehow emulate salesforce behaviour on metadata retrieval and avoid polluting files with non-useful metadata.
 
+#### Field-Level Security management
+
+Edit your profiles' Field-Level Security directly from the extension. It supports search for access level. You'll be finally able to find fields with no access and easily update them!
+
+![Field-Level Security](/images/fls_mgmt.png)
+
 ## Known Issues
 
 User Permission list might be outdated/not complete, feel free to pull request!
