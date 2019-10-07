@@ -77,6 +77,9 @@ User Permission list might be outdated/not complete, feel free to pull request!
 
 ## Release Notes
 
+### 0.0.15
+Minor Bugfixes
+
 ### 0.0.14
 Field-Level Security Management
 
