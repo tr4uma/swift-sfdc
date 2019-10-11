@@ -7,6 +7,7 @@ export default class LongTextArea implements SObjectFieldDefinition {
   type: string
   required: boolean
   length: string
+  visibleLines: string
 
   constructor(fullName: string, label: string, externalId: boolean, required: boolean, length: string) {
     this.fullName = fullName
@@ -15,5 +16,6 @@ export default class LongTextArea implements SObjectFieldDefinition {
     this.type = 'LongTextArea'
     this.required = required
     this.length = length
+    this.visibleLines = '3'
   }
 }
