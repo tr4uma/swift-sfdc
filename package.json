@@ -23,7 +23,7 @@
     "Other"
   ],
   "activationEvents": [
-    "workspaceContains:**/package.xml"
+    "workspaceContains:**/src/package.xml"
   ],
   "main": "./dist/extension.js",
   "contributes": {

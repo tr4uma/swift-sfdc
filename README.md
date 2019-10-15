@@ -77,6 +77,9 @@ User Permission list might be outdated/not complete, feel free to pull request!
 
 ## Release Notes
 
+### 0.0.17
+Bugfix (Extension activating in non-package.xml containing projects)
+
 ### 0.0.16
 Minor Bugfix (Visible Lines for long text areas)
 
