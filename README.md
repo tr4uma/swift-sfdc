@@ -77,6 +77,9 @@ User Permission list might be outdated/not complete, feel free to pull request!
 
 ## Release Notes
 
+### 0.0.18
+Updated dependencies to fix security issues
+
 ### 0.0.17
 Bugfix (Extension activating in non-package.xml containing projects)
 
