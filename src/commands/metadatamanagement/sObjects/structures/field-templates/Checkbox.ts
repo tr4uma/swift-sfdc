@@ -1,4 +1,4 @@
-import SObjectFieldDefinition from "../SObjectFieldDefinition";
+import SObjectFieldDefinition from "../SObjectFieldDefinition"
 
 export default class Checkbox implements SObjectFieldDefinition {
   fullName: string
