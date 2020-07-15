@@ -4,6 +4,7 @@ import ApexClassesFileManager from './metadatamanagement/apexClasses/apexClasses
 import ApexClassFile from './metadatamanagement/apexClasses/structures/ApexClassFile'
 import ProfilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
 import Prompts from './builders/prompts/Prompts'
+import Monitor from '../monitoring/monitor'
 
 async function configureClassAccessForProfile(profile: string, classes: ApexClassFile[], preselectedClasses: string[]): Promise<any> {
 
@@ -25,6 +26,7 @@ async function configureClassAccessForProfile(profile: string, classes: ApexClas
 }
 
 export default async function configureProfilesApexClasses() {
+  Monitor.getInstance().sendEvent('configureProfilesApexClasses')
   try {
     const profiles = ProfileFilesManager.getObjectsFromMetaData()
     const selectedProfile = await Prompts.profiles.pickOne(profiles)

@@ -10,6 +10,7 @@ import FieldPermission from './metadatamanagement/profiles/structures/profile-fi
 import { SObjectType } from './metadatamanagement/sObjects/structures/SObjectType'
 import AccessType from './metadatamanagement/profiles/structures/AccessType'
 import SObjectFieldDefinition from './metadatamanagement/sObjects/structures/SObjectFieldDefinition'
+import Monitor from '../monitoring/monitor'
 
 async function configureFLSForProfileAndSObject(profileName: string, sObjectName: string, objectDefinition: any, unpackedProfile: any): Promise<SObjectFieldDefinition> {
   return new Promise(async (resolve, reject) => {
@@ -99,6 +100,7 @@ async function configureFLSForField(field: string, profileName: string): Promise
 }
 
 export default async function configureProfilesFLS() {
+  Monitor.getInstance().sendEvent('configureProfilesFLS')
   try {
     const profiles = ProfileFilesManager.getObjectsFromMetaData()
     const selectedProfile = await Prompts.profiles.pickOne(profiles)

@@ -3,6 +3,7 @@ import ProfileFilesManager from './metadatamanagement/profiles/ProfileFilesManag
 import Prompts from './builders/prompts/Prompts'
 import ProfileUserPermission from './metadatamanagement/profiles/structures/ProfileUserPermission'
 import UserPermission from './metadatamanagement/profiles/structures/profile-fields-templates/UserPermission'
+import Monitor from '../monitoring/monitor'
 
 async function configureUserPermissions(profile: string, userPermissions: string[], preselectedPermissionsMap: any): Promise<any> {
 
@@ -32,7 +33,8 @@ async function configureUserPermissions(profile: string, userPermissions: string
  * turning then on the selected ones and adding the missing ones
  * No disabled new permission is added
  */
-export default async function configureProfilesApexClasses() {
+export default async function configureProfilesUserPermissions() {
+  Monitor.getInstance().sendEvent('configureProfilesUserPermissions')
   try {
     const profiles = ProfileFilesManager.getObjectsFromMetaData()
     const selectedProfile = await Prompts.profiles.pickOne(profiles)

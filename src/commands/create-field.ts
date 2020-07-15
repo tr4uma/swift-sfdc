@@ -11,6 +11,7 @@ import AccessType from './metadatamanagement/profiles/structures/AccessType'
 import utils from './metadatamanagement/utils'
 import Prompts from './builders/prompts/Prompts'
 import { SObjectType } from './metadatamanagement/sObjects/structures/SObjectType'
+import Monitor from '../monitoring/monitor'
 
 
 // SFDC Metadata types selection
@@ -41,6 +42,7 @@ async function pickSObjectFieldType(): Promise<SObjectFieldType> {
 
 // Main functionality
 export default async function createField() {
+  Monitor.getInstance().sendEvent('createField')
   try {
     const SObjectFiles = await sObjFileMgr.getObjectsFromMetaData()
     const pickedSObject: SObjectFile = await Prompts.sObjects.pickOne(SObjectFiles)

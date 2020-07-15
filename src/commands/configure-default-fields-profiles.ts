@@ -3,8 +3,10 @@ import * as vscode from 'vscode'
 import ProfileFile from './metadatamanagement/profiles/structures/ProfileFile'
 import ProfileFilesManager from './metadatamanagement/profiles/ProfileFilesManager'
 import Prompts from './builders/prompts/Prompts'
+import Monitor from '../monitoring/monitor'
 
 export default async function configureDefaultFieldsProfiles() {
+  Monitor.getInstance().sendEvent('configureDefaultFieldsProfiles')
   try {
     const profiles = ProfileFilesManager.getObjectsFromMetaData()
     let preselected: string[] = []

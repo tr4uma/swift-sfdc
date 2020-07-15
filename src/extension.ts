@@ -4,6 +4,7 @@
 import * as vscode from 'vscode'
 import cmd from './commands'
 import ConfigManager from './config/config-manager'
+import Monitor from './monitoring/monitor'
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -27,10 +28,17 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureCrossProfileUserPermission', cmd.configureCrossProfileUserPermission))
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfilesFLS', cmd.configureProfilesFLS))
 
+
   vscode.commands.executeCommand('setContext', 'swift-sfdc-active', true)
+
+  Monitor.getInstance().init(context)
+
+  Monitor.getInstance().sendEvent('init')
 
   console.log('Congratulations, your extension "swift-sfdc" is now active!')
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate() { 
+  Monitor.getInstance().dispose()
+ }

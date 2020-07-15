@@ -2,6 +2,7 @@ import * as vscode from 'vscode'
 import ProfileFilesManager from './metadatamanagement/profiles/ProfileFilesManager'
 import Prompts from './builders/prompts/Prompts'
 import UserPermission from './metadatamanagement/profiles/structures/profile-fields-templates/UserPermission'
+import Monitor from '../monitoring/monitor'
 
 async function configureProfilesForPermission(profileMetas: { name: string, meta: any }[], permission: string): Promise<string> {
 
@@ -38,7 +39,8 @@ async function configureProfilesForPermission(profileMetas: { name: string, meta
  * turning then on the selected ones and adding the missing ones
  * No disabled new permission is added
  */
-export default async function configureProfilesApexClasses() {
+export default async function configureProfilesUserPermission() {
+  Monitor.getInstance().sendEvent('configureProfilesUserPermission')
   try {
     const permission = await Prompts.profiles.pickUserPermission()
     const profiles = ProfileFilesManager.getObjectsFromMetaData()

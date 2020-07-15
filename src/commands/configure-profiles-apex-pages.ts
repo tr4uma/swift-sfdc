@@ -5,6 +5,7 @@ import ApexPagesFileManager from './metadatamanagement/apexPages/apexPagesFileMa
 import ApexPageFile from './metadatamanagement/apexPages/structures/ApexPageFile'
 import ProfilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
 import Prompts from './builders/prompts/Prompts'
+import Monitor from '../monitoring/monitor'
 
 async function configureClassAccessForProfile(profile: string, classes: ApexPageFile[], preselectedPages: string[]): Promise<any> {
 
@@ -25,7 +26,8 @@ async function configureClassAccessForProfile(profile: string, classes: ApexPage
   })
 }
 
-export default async function configureProfilesApexClasses() {
+export default async function configureProfilesApexPages() {
+  Monitor.getInstance().sendEvent('configureProfilesApexPages')
   try {
     const profiles = ProfileFilesManager.getObjectsFromMetaData()
     const selectedProfile = await Prompts.profiles.pickOne(profiles)
