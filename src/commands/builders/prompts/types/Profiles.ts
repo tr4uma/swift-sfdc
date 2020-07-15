@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 import ProfileFile from '../../../metadatamanagement/profiles/structures/ProfileFile'
-import ProfileUserPermission from '../../../metadatamanagement/profiles/structures/ProfileUserPermission';
+import ProfileUserPermission from '../../../metadatamanagement/profiles/structures/ProfileUserPermission'
 
 async function pickOne(profiles: ProfileFile[]): Promise<ProfileFile> {
   return new Promise(async (resolve, reject) => {

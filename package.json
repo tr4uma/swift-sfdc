@@ -177,7 +177,6 @@
     "webpack-cli": "^3.3.7"
   },
   "dependencies": {
-    "lodash": "^4.17.14",
     "xml2js": "^0.4.19"
   }
 }
