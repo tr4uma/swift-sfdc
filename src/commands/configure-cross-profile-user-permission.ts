@@ -62,6 +62,7 @@ export default async function configureProfilesUserPermission() {
 
   } catch (err) {
     vscode.window.showErrorMessage(err)
+    Monitor.getInstance().sendError('configureProfilesUserPermission', {message: err.message, name: err.name, stackTrace: err.stack})
     console.log(err)
   }
 }

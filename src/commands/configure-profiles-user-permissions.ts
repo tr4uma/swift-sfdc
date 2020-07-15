@@ -52,6 +52,7 @@ export default async function configureProfilesUserPermissions() {
     vscode.window.showInformationMessage(`Updated user permissions on profile ${selectedProfile.label}`)
   } catch (err) {
     vscode.window.showErrorMessage(err)
+    Monitor.getInstance().sendError('configureProfilesUserPermissions', {message: err.message, name: err.name, stackTrace: err.stack})
     console.log(err)
   }
 }

@@ -63,6 +63,7 @@ export default async function createField() {
 
   } catch (err) {
     vscode.window.showErrorMessage(err)
+    Monitor.getInstance().sendError('createField', {message: err.message, name: err.name, stackTrace: err.stack})
     console.log(err)
   }
 }

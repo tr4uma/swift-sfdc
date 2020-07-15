@@ -119,6 +119,7 @@ export default async function configureProfilesFLS() {
     vscode.window.showInformationMessage(`Updated FLS on profile ${selectedProfile.label} for ${pickedSObject.label}.${pickedField.fullName}`)
   } catch (err) {
     vscode.window.showErrorMessage(err)
+    Monitor.getInstance().sendError('configureProfilesFLS', {message: err.message, name: err.name, stackTrace: err.stack})
     console.log(err)
   }
 }

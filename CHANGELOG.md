@@ -2,7 +2,10 @@
 
 All notable changes to the "swift-sfdc" extension will be documented in this file.
 
-### 0.0.19
+### 0.0.21
+Error telemetry
+
+### 0.0.20
 Removed useless dependencies, added telemetry
 
 ### 0.0.19

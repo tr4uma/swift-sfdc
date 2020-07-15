@@ -19,6 +19,7 @@ export default async function configureDefaultFieldsProfiles() {
     ConfigManager.getInstance().getConfig().defaultProfiles = selectedProfiles
   } catch (err) {
     vscode.window.showErrorMessage(err)
+    Monitor.getInstance().sendError('configureDefaultFieldsProfiles', {message: err.message, name: err.name, stackTrace: err.stack})
     console.log(err)
   }
 

@@ -38,6 +38,7 @@ export default async function configureProfilesApexClasses() {
     vscode.window.showInformationMessage(`Updated classes access on profile ${selectedProfile.label}`)
   } catch (err) {
     vscode.window.showErrorMessage(err)
+    Monitor.getInstance().sendError('configureProfilesApexClasses', {message: err.message, name: err.name, stackTrace: err.stack})
     console.log(err)
   }
 }

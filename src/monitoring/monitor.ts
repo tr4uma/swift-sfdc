@@ -29,6 +29,15 @@ export default class Monitor {
         }
     }
 
+    sendError(tag: string, properties?: {[key: string]: string;}, measurements?: {[key: string]: number;}): void {
+        try{
+            if(this.monitor) { this.monitor.sendTelemetryErrorEvent(tag, properties, measurements) }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+
     dispose(): void {
         try {
             if(this.monitor) { this.monitor.dispose() }

@@ -39,6 +39,7 @@ export default async function configureProfilesApexPages() {
     vscode.window.showInformationMessage(`Updated Visualforce pages access on profile ${selectedProfile.label}`)
   } catch (err) {
     vscode.window.showErrorMessage(err)
+    Monitor.getInstance().sendError('configureProfilesApexPages', {message: err.message, name: err.name, stackTrace: err.stack})
     console.log(err)
   }
 }
