@@ -2,6 +2,8 @@
 
 All notable changes to the "swift-sfdc" extension will be documented in this file.
 
+### 0.0.22
+Profile FLS Config bugfixes
 ### 0.0.21
 Error telemetry
 

@@ -32,7 +32,7 @@ async function promptForFieldApiName(label: string, forbiddenApiNames: string[])
             valueSelection: [0, escaped.length - 3],
             prompt: 'Only normal letters and underscores are allowed. Must end with \'__c\'',
             validateInput: (value: string): string | undefined => {
-                if (!(/^[[a-zA-Z0-9_]{3,40}(?<!_)__c$/.test(value))) { return 'Invalid Api Name. Must only use Uppercase or Lowercase Letters, numbers, underscores (\'_\') and terminate with \'__c\'.' }
+                if (!(/^[[a-zA-Z0-9_]{1,40}(?<!_)__c$/.test(value))) { return 'Invalid Api Name. Must only use Uppercase or Lowercase Letters, numbers, underscores (\'_\') and terminate with \'__c\'.' }
                 if (forbiddenApiNames.indexOf(value) !== -1) { return 'Another Field with the same Api Name already exists on the object.' }
                 return undefined
             }

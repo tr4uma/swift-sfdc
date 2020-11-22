@@ -32,17 +32,16 @@ async function configureFLSForProfileAndSObject(profileName: string, sObjectName
           detail: '',
           field: {
             editable: false,
-            field: field.fullName,
+            field: field,
             readable: false
           }
         }
+        opt.field.field = field
         if (mappedPermissions[`${sObjectName}.${field.fullName}`]) {
           let perm = mappedPermissions[`${sObjectName}.${field.fullName}`]
 
           opt.description += perm.editable ? '✏️' : (perm.readable ? '👀' : '❌')
           opt.detail += perm.editable ? 'EDITABLE' : (perm.readable ? 'READABLE' : 'NO ACCESS')
-
-          opt.field = field
 
         } else {
           opt.description = '🤷‍'
@@ -55,7 +54,7 @@ async function configureFLSForProfileAndSObject(profileName: string, sObjectName
 
       const res: any | undefined = await vscode.window.showQuickPick(options, { ignoreFocusOut: true, placeHolder: `Select ${sObjectName} field you want to edit FLS for profile ${profileName}.`, matchOnDetail: true })
       if (res !== undefined) {
-        resolve(res.field)
+        resolve(res.field.field)
       } else {
         reject('Profiles FLS Configuration Aborted')
       }
