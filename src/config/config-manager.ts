@@ -2,6 +2,7 @@ import SwiftSfdcConfiguration from './config'
 import * as path from 'path'
 import * as vscode from 'vscode'
 import * as fs from 'fs'
+import MetadataStructure from '../commands/metadatamanagement/profiles/structures/MetadataStructure'
 
 export default class ConfigManager {
 
@@ -20,6 +21,27 @@ export default class ConfigManager {
 
   private _currentConfig: any = undefined
 
+  retrieveBackwardCompatibleRootFolder(): string {
+    let projRoot = this.getConfig().projectRootFolder
+    if(!projRoot) {
+      this.setAntProjectStructure()
+    }
+    projRoot = this.getConfig().projectRootFolder
+    return projRoot
+  }
+
+  private setSFDXProjectStructure() {
+    this.getConfig().projectRootFolder = './force-app/main/default'
+    this.getConfig().metadataStructure = MetadataStructure.SF_SFDX
+    this.getConfig().packageLocation = './manifest/'
+  }
+
+  private setAntProjectStructure() {
+    this.getConfig().projectRootFolder = 'src'
+    this.getConfig().metadataStructure = MetadataStructure.SF_Original
+    this.getConfig().packageLocation = './'
+  }
+
   getConfig(): SwiftSfdcConfiguration {
     return this._currentConfig
   }
@@ -33,10 +55,37 @@ export default class ConfigManager {
     return undefined
   }
 
+  private autodiscoverProjectStructure(): MetadataStructure {
+    if(fs.existsSync('./src/package.xml')) {
+      return MetadataStructure.SF_Original
+    }
+    else {
+      return MetadataStructure.SF_SFDX
+    }
+  }
+
   private storeConfig(config: SwiftSfdcConfiguration): boolean {
     try {
       console.log('Storing configuration..')
       fs.writeFileSync(this.getCfgPath(), JSON.stringify(config))
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+
+  private setConfig(config: SwiftSfdcConfiguration): boolean {
+    try {
+      const handler: ProxyHandler<SwiftSfdcConfiguration> = {
+        get(target: any, property: PropertyKey) {
+          return target[property]
+        },
+        set(target: any, property: PropertyKey, value: any): boolean {
+          target[property] = value
+          return ConfigManager.getInstance().storeConfig(target)
+        }
+      }
+      this._currentConfig = new Proxy(config, handler)
       return true
     } catch (err) {
       return false
@@ -51,17 +100,24 @@ export default class ConfigManager {
         console.log('Configuration not found, generating a new one')
         config = new SwiftSfdcConfiguration()
       }
-      const handler: ProxyHandler<SwiftSfdcConfiguration> = {
-        get(target: any, property: PropertyKey) {
-          return target[property]
-        },
-        set(target: any, property: PropertyKey, value: any): boolean {
-          target[property] = value
-          return ConfigManager.getInstance().storeConfig(target)
-        }
-      }
-      this._currentConfig = new Proxy(config, handler)
+      this.setConfig(config)
       this.storeConfig(this._currentConfig)
     }
+  }
+
+  resetToDefault() {
+    console.log('Resetting config to default')
+    this.setConfig(new SwiftSfdcConfiguration())
+    this.storeConfig(this._currentConfig)
+  }
+
+  reloadConfig() {
+    let config = this.readConfig()
+    if (config === undefined) {
+      console.log('Configuration not found, generating a new one')
+      config = new SwiftSfdcConfiguration()
+    }
+    this.setConfig(config)
+    this.storeConfig(this._currentConfig)
   }
 }

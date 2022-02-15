@@ -11,11 +11,12 @@ import SObjectFile from '../sObjects/structures/SObjectFile'
 import utils from '../utils'
 import UserPermission from './structures/profile-fields-templates/UserPermission'
 import FieldPermission from './structures/profile-fields-templates/FieldPermission'
+import ConfigManager from '../../../config/config-manager'
 
 export default {
 
   getObjectsFromMetaData: function (): ProfileFile[] {
-    const p = path.join(vscode.workspace.rootPath as string, 'src', 'profiles')
+    const p = path.join(vscode.workspace.rootPath as string, ConfigManager.getInstance().retrieveBackwardCompatibleRootFolder(), 'profiles')
     const files = fs.readdirSync(p)
     if (files.length === 0) { throw Error('No Profile definition file was found in folder ' + p) }
     return this.generateProfilesDefinitions(files, p)

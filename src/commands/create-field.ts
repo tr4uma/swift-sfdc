@@ -53,7 +53,7 @@ export default async function createField() {
     objectDefinition.CustomObject.fields.push(sObjectFieldDefinition)
     objectDefinition.CustomObject.fields.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))
 
-    sObjFileMgr.writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
+    sObjFileMgr.writeSObjectDefinitionFile(pickedSObject, objectDefinition)
 
     if (pickedSObject.sObjectType === SObjectType.SObject) {
       ProfilesFileMgr.updateProfilesVisibilityForField(ConfigManager.getInstance().getConfig().defaultProfiles || [], [{ sObject: pickedSObject, fields: [sObjectFieldDefinition] }], AccessType.edit)

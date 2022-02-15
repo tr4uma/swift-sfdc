@@ -3,11 +3,12 @@ import * as path from 'path'
 import * as vscode from 'vscode'
 import * as fs from 'fs'
 import { PathLike } from "fs"
+import ConfigManager from '../../../config/config-manager'
 
 export default {
 
     getObjectsFromMetaData: function (): ApexPageFile[] {
-        const p = path.join(vscode.workspace.rootPath as string, 'src', 'pages')
+        const p = path.join(vscode.workspace.rootPath as string, ConfigManager.getInstance().retrieveBackwardCompatibleRootFolder(), 'pages')
         const files = fs.readdirSync(p)
         if (files.length === 0) { throw Error('No Visualforce Page definition file was found in folder ' + p) }
         return this.generateSObjectDefinitions(files, p)
