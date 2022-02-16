@@ -19215,6 +19215,7 @@ function fieldCreationWizard(otherFields, availableSObjectsList) {
             try {
                 const pickedFieldType = yield pickSObjectFieldType();
                 let obj = yield SObjectFieldBuilders_1.default[pickedFieldType](forbiddenApiNames, availableSObjectsList);
+                obj.isNew = true;
                 resolve(obj);
             }
             catch (err) {
@@ -19242,7 +19243,7 @@ function createField() {
             const sObjectFieldDefinition = yield fieldCreationWizard(objectDefinition.CustomObject.fields, SObjectFiles.map(file => file.label));
             objectDefinition.CustomObject.fields.push(sObjectFieldDefinition);
             objectDefinition.CustomObject.fields.sort((a, b) => utils_1.default.sortItemsByField(a, b, 'fullName'));
-            SObjectFilesManager_1.default.writeSObjectDefinitionFile(pickedSObject, objectDefinition);
+            yield SObjectFilesManager_1.default.writeSObjectDefinitionFile(pickedSObject, objectDefinition);
             if (pickedSObject.sObjectType === SObjectType_1.SObjectType.SObject) {
                 ProfileFilesManager_1.default.updateProfilesVisibilityForField(config_manager_1.default.getInstance().getConfig().defaultProfiles || [], [{ sObject: pickedSObject, fields: [sObjectFieldDefinition] }], AccessType_1.default.edit);
             }
@@ -19469,7 +19470,7 @@ exports.default = {
         });
     },
     writeProfileDefinitionFile: function (fileNamePath, stuffToWrite) {
-        const builder = new xml2js.Builder({ xmldec: { standalone: undefined, encoding: 'UTF-8', version: '1.0' } });
+        const builder = new xml2js.Builder({ xmldec: { standalone: undefined, encoding: 'UTF-8', version: '1.0' }, renderOpts: { pretty: true, indent: '    ', newline: '\n' } });
         //Probably there's a bug in the builder class
         const xml = builder.buildObject(stuffToWrite);
         //130 is the number of characters of the first two lines containing header + root object definition
@@ -19918,17 +19919,18 @@ exports.default = {
                 else {
                     const fields = fs.readdirSync(path.join(filePath, 'fields'));
                     let objDef = { CustomObject: { fields: [] } }; //fake SObject definition cause we only care about fields
-                    const xmlParser = new xml2js.Parser({ explicitArray: false, valueProcessors: [processors_1.parseBooleans] });
                     const fieldsArr = yield Promise.all(fields.map(field => {
                         return new Promise((resolve, reject) => {
                             const fileContent = fs.readFileSync(path.join(filePath, 'fields', field), { encoding: 'utf-8' });
+                            const xmlParser = new xml2js.Parser({ explicitArray: false, valueProcessors: [processors_1.parseBooleans] });
                             try {
                                 const parsedFile = xmlParser.parseString(fileContent, (err, result) => {
+                                    console.log(result);
                                     if (err) {
                                         reject(err);
                                     }
                                     else {
-                                        resolve(result);
+                                        resolve(result.CustomField);
                                     }
                                 });
                             }
@@ -19939,20 +19941,52 @@ exports.default = {
                     }));
                     objDef.CustomObject.fields = fieldsArr;
                     objDef.CustomObject.fields.sort((a, b) => utils_1.default.sortItemsByField(a, b, 'fullName'));
-                    console.log(objDef.CustomObject.fields[0]);
                     resolve(objDef);
                 }
             }));
         });
     },
     writeSObjectDefinitionFile: function (sObjFile, stuffToWrite) {
-        const fileNamePath = path.join(sObjFile.folder.toString(), sObjFile.fileName);
-        const builder = new xml2js.Builder({ xmldec: { standalone: undefined, encoding: 'UTF-8', version: '1.0' } });
-        //Probably there's a bug in the builder class
-        const xml = builder.buildObject(stuffToWrite);
-        //130 is the number of characters of the first two lines containing header + root object definition
-        let escaped = xml.substr(0, 130) + xml.substr(130, xml.length - 130).replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-        fs.writeFileSync(fileNamePath.toString(), escaped, 'utf8');
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+                if (!sObjFile.isDirectory) {
+                    try {
+                        const fileNamePath = path.join(sObjFile.folder.toString(), sObjFile.fileName);
+                        const builder = new xml2js.Builder({ xmldec: { standalone: undefined, encoding: 'UTF-8', version: '1.0' } });
+                        //Probably there's a bug in the builder class
+                        const xml = builder.buildObject(stuffToWrite);
+                        //130 is the number of characters of the first two lines containing header + root object definition
+                        let escaped = xml.substr(0, 130) + xml.substr(130, xml.length - 130).replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+                        fs.writeFileSync(fileNamePath.toString(), escaped, 'utf8');
+                        resolve();
+                    }
+                    catch (err) {
+                        reject(err);
+                    }
+                }
+                else {
+                    let fieldsToAdd = stuffToWrite.CustomObject.fields.filter((el) => el.isNew);
+                    yield Promise.all(fieldsToAdd.map((fieldToAdd) => {
+                        return new Promise((resolve, reject) => {
+                            try {
+                                const fileNamePath = path.join(sObjFile.folder.toString(), sObjFile.fileName, 'fields', `${fieldToAdd.fullName}.field-meta.xml`);
+                                const builder = new xml2js.Builder({ xmldec: { standalone: undefined, encoding: 'UTF-8', version: '1.0' }, renderOpts: { pretty: true, indent: '    ', newline: '\n' } });
+                                delete fieldToAdd.isNew;
+                                fieldToAdd['$'] = { xmlns: 'http://soap.sforce.com/2006/04/metadata' };
+                                let fieldObj = { CustomField: fieldToAdd };
+                                const xml = builder.buildObject(fieldObj);
+                                fs.writeFileSync(fileNamePath.toString(), xml, 'utf8');
+                                resolve(true);
+                            }
+                            catch (err) {
+                                reject(false);
+                            }
+                        });
+                    }));
+                    resolve();
+                }
+            }));
+        });
     }
 };
 

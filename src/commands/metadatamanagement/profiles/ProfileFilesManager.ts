@@ -46,7 +46,7 @@ export default {
   },
 
   writeProfileDefinitionFile: function (fileNamePath: PathLike, stuffToWrite: any) {
-    const builder = new xml2js.Builder({ xmldec: { standalone: undefined, encoding: 'UTF-8', version: '1.0' } })
+    const builder = new xml2js.Builder({ xmldec: { standalone: undefined, encoding: 'UTF-8', version: '1.0' }, renderOpts: {pretty: true, indent: '    ', newline: '\n'} })
     //Probably there's a bug in the builder class
     const xml = builder.buildObject(stuffToWrite)
     //130 is the number of characters of the first two lines containing header + root object definition

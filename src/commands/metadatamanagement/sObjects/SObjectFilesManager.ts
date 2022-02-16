@@ -7,6 +7,7 @@ import { parseBooleans } from 'xml2js/lib/processors'
 import { PathLike } from "fs"
 import ConfigManager from '../../../config/config-manager'
 import utils from '../utils'
+import { resolve } from 'dns'
 
 export default {
 
@@ -41,12 +42,13 @@ export default {
       } else {
         const fields = fs.readdirSync(path.join(filePath, 'fields'))
         let objDef = { CustomObject: {  fields: [] as any } } //fake SObject definition cause we only care about fields
-        const xmlParser = new xml2js.Parser({ explicitArray: false, valueProcessors: [parseBooleans] })
         const fieldsArr = await Promise.all(fields.map(field => {
           return new Promise((resolve, reject) => {
             const fileContent = fs.readFileSync(path.join(filePath, 'fields', field), { encoding: 'utf-8' })
+            const xmlParser = new xml2js.Parser({ explicitArray: false, valueProcessors: [parseBooleans] })
             try {
               const parsedFile: any = xmlParser.parseString(fileContent, (err: any, result: any) => {
+                console.log(result)
                 if (err) { reject(err) }
                 else { resolve(result.CustomField) }
               })
@@ -57,20 +59,49 @@ export default {
         }))
         objDef.CustomObject.fields = fieldsArr
         objDef.CustomObject.fields.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))
-        console.log(objDef.CustomObject.fields[0])
         resolve(objDef)
         
       }
     })
   },
 
-  writeSObjectDefinitionFile: function (sObjFile: SObjectFile, stuffToWrite: any) {
-    const fileNamePath = path.join(sObjFile.folder.toString(), sObjFile.fileName)
-    const builder = new xml2js.Builder({ xmldec: { standalone: undefined, encoding: 'UTF-8', version: '1.0' } })
-    //Probably there's a bug in the builder class
-    const xml = builder.buildObject(stuffToWrite)
-    //130 is the number of characters of the first two lines containing header + root object definition
-    let escaped = xml.substr(0, 130) + xml.substr(130, xml.length - 130).replace(/"/g, '&quot;').replace(/'/g, '&apos;')
-    fs.writeFileSync(fileNamePath.toString(), escaped, 'utf8')
+  writeSObjectDefinitionFile: async function (sObjFile: SObjectFile, stuffToWrite: any): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      if(!sObjFile.isDirectory) {
+        try {
+          const fileNamePath = path.join(sObjFile.folder.toString(), sObjFile.fileName)
+          const builder = new xml2js.Builder({ xmldec: { standalone: undefined, encoding: 'UTF-8', version: '1.0' } })
+          //Probably there's a bug in the builder class
+          const xml = builder.buildObject(stuffToWrite)
+          //130 is the number of characters of the first two lines containing header + root object definition
+          let escaped = xml.substr(0, 130) + xml.substr(130, xml.length - 130).replace(/"/g, '&quot;').replace(/'/g, '&apos;')
+          fs.writeFileSync(fileNamePath.toString(), escaped, 'utf8')
+          resolve()
+        } catch (err) {
+          reject(err)
+        }
+      } else {
+        let fieldsToAdd = stuffToWrite.CustomObject.fields.filter((el: { isNew: boolean }) => el.isNew)
+        await Promise.all(fieldsToAdd.map((fieldToAdd: { fullName: any, isNew: any, $: any }) => {
+          return new Promise((resolve, reject) => {
+            try {
+            const fileNamePath = path.join(sObjFile.folder.toString(), sObjFile.fileName, 'fields', `${fieldToAdd.fullName}.field-meta.xml`)
+            const builder = new xml2js.Builder({ xmldec: { standalone: undefined, encoding: 'UTF-8', version: '1.0' }, renderOpts: {pretty: true, indent: '    ', newline: '\n'} })
+            
+            delete fieldToAdd.isNew
+            fieldToAdd['$'] = { xmlns: 'http://soap.sforce.com/2006/04/metadata'}
+            let fieldObj = { CustomField: fieldToAdd}
+            const xml = builder.buildObject(fieldObj)
+            fs.writeFileSync(fileNamePath.toString(), xml, 'utf8')
+            resolve(true)
+            } catch (err) {
+              reject(false)
+            }
+          })
+        }))
+        resolve()
+      }
+    })
+    
   }
 }
