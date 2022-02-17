@@ -8,7 +8,7 @@ import ConfigManager from '../../../config/config-manager'
 export default {
 
     getObjectsFromMetaData: function (): ApexClassFile[] {
-        const p = path.join(vscode.workspace.rootPath as string, ConfigManager.getInstance().retrieveBackwardCompatibleRootFolder(), 'classes')
+        const p = path.join(ConfigManager.getInstance().getVSCodeRoot() as string, ConfigManager.getInstance().retrieveBackwardCompatibleRootFolder(), 'classes')
         const files = fs.readdirSync(p)
         if (files.length === 0) { throw Error('No Apex Class definition file was found in folder ' + p) }
         return this.generateSObjectDefinitions(files, p)

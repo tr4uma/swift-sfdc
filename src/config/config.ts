@@ -5,7 +5,7 @@ export default class SwiftSfdcConfiguration {
   defaultProfiles: ProfileFile[] | undefined = undefined
   metadataStructure: MetadataStructure | undefined = MetadataStructure.SF_SFDX
   packageLocation: string =  './manifest/'
-  projectRootFolder: string = './force-app/main/default'
+  sfRootFolder: string = './force-app/main/default'
   constructor() {
   }
 }

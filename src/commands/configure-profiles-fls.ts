@@ -1,7 +1,5 @@
 import * as vscode from 'vscode'
 import ProfileFilesManager from './metadatamanagement/profiles/ProfileFilesManager'
-import ApexClassesFileManager from './metadatamanagement/apexClasses/apexClassesFileManager'
-import ApexClassFile from './metadatamanagement/apexClasses/structures/ApexClassFile'
 import ProfilesFileMgr from './metadatamanagement/profiles/ProfileFilesManager'
 import Prompts from './builders/prompts/Prompts'
 import sObjFileMgr from './metadatamanagement/sObjects/SObjectFilesManager'

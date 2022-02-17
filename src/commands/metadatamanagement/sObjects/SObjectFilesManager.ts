@@ -1,18 +1,15 @@
 import SObjectFile from './structures/SObjectFile'
 import * as path from 'path'
-import * as vscode from 'vscode'
 import * as fs from 'fs'
 import * as xml2js from 'xml2js'
 import { parseBooleans } from 'xml2js/lib/processors'
-import { PathLike } from "fs"
 import ConfigManager from '../../../config/config-manager'
 import utils from '../utils'
-import { resolve } from 'dns'
 
 export default {
 
   getObjectsFromMetaData: function (): SObjectFile[] {
-    const p = path.join(vscode.workspace.rootPath as string, ConfigManager.getInstance().retrieveBackwardCompatibleRootFolder(), 'objects')
+    const p = path.join(ConfigManager.getInstance().getVSCodeRoot() as string, ConfigManager.getInstance().retrieveBackwardCompatibleRootFolder(), 'objects')
     const files = fs.readdirSync(p, { withFileTypes: true })
     if (files.length === 0) { throw Error('No SObject definition file was found in folder ' + p) }
     return this.generateSObjectDefinitions(files, p)

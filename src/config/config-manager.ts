@@ -17,29 +17,34 @@ export default class ConfigManager {
 
   private constructor() { this.init() }
 
-  private getCfgPath = () => path.join(vscode.workspace.rootPath as string, '.swift-sfdc.json')
+  private getCfgPath = () => path.join(this.getVSCodeRoot() as string, '.swift-sfdc.json')
 
   private _currentConfig: any = undefined
 
   retrieveBackwardCompatibleRootFolder(): string {
-    let projRoot = this.getConfig().projectRootFolder
+    let projRoot = this.getConfig().sfRootFolder
     if(!projRoot) {
-      this.setAntProjectStructure()
+      if(this.autodiscoverProjectStructure() === MetadataStructure.SF_Original) {
+        this.setAntProjectStructure(this.getConfig())
+      } else {
+        this.setSFDXProjectStructure(this.getConfig())
+      }
+      
     }
-    projRoot = this.getConfig().projectRootFolder
+    projRoot = this.getConfig().sfRootFolder
     return projRoot
   }
 
-  private setSFDXProjectStructure() {
-    this.getConfig().projectRootFolder = './force-app/main/default'
-    this.getConfig().metadataStructure = MetadataStructure.SF_SFDX
-    this.getConfig().packageLocation = './manifest/'
+  private setSFDXProjectStructure(config: SwiftSfdcConfiguration) {
+    config.sfRootFolder = './force-app/main/default'
+    config.metadataStructure = MetadataStructure.SF_SFDX
+    config.packageLocation = './manifest/'
   }
 
-  private setAntProjectStructure() {
-    this.getConfig().projectRootFolder = 'src'
-    this.getConfig().metadataStructure = MetadataStructure.SF_Original
-    this.getConfig().packageLocation = './'
+  private setAntProjectStructure(config: SwiftSfdcConfiguration) {
+    config.sfRootFolder = 'src'
+    config.metadataStructure = MetadataStructure.SF_Original
+    config.packageLocation = './'
   }
 
   getConfig(): SwiftSfdcConfiguration {
@@ -47,7 +52,7 @@ export default class ConfigManager {
   }
 
   readConfig(): SwiftSfdcConfiguration | undefined {
-    if (vscode.workspace.rootPath && fs.existsSync(this.getCfgPath())) {
+    if (this.getVSCodeRoot() && fs.existsSync(this.getCfgPath())) {
       const storedCfg = fs.readFileSync(this.getCfgPath(), 'utf8')
       const cfg: SwiftSfdcConfiguration = JSON.parse(storedCfg)
       return cfg
@@ -56,12 +61,13 @@ export default class ConfigManager {
   }
 
   private autodiscoverProjectStructure(): MetadataStructure {
-    if(fs.existsSync('./src/package.xml')) {
-      return MetadataStructure.SF_Original
+    console.log('Autodiscoverying Project Structure..')
+    let projStructure = MetadataStructure.SF_SFDX //defaulting to new structure
+    if(fs.existsSync(`${this.getVSCodeRoot()}/src/package.xml`)) {
+      projStructure = MetadataStructure.SF_Original
     }
-    else {
-      return MetadataStructure.SF_SFDX
-    }
+    console.log(`Configured ${projStructure} project structure`)
+    return projStructure
   }
 
   private storeConfig(config: SwiftSfdcConfiguration): boolean {
@@ -99,6 +105,11 @@ export default class ConfigManager {
       if (config === undefined) {
         console.log('Configuration not found, generating a new one')
         config = new SwiftSfdcConfiguration()
+        if(this.autodiscoverProjectStructure() === MetadataStructure.SF_Original) {
+          this.setAntProjectStructure(config)
+        } else {
+          this.setSFDXProjectStructure(config)
+        }
       }
       this.setConfig(config)
       this.storeConfig(this._currentConfig)
@@ -119,5 +130,9 @@ export default class ConfigManager {
     }
     this.setConfig(config)
     this.storeConfig(this._currentConfig)
+  }
+
+  getVSCodeRoot(): string | undefined {
+    return vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri.path
   }
 }

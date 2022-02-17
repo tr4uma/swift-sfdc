@@ -19307,12 +19307,11 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", { value: true });
 const ApexClassFile_1 = __webpack_require__(/*! ./structures/ApexClassFile */ "./src/commands/metadatamanagement/apexClasses/structures/ApexClassFile.ts");
 const path = __webpack_require__(/*! path */ "path");
-const vscode = __webpack_require__(/*! vscode */ "vscode");
 const fs = __webpack_require__(/*! fs */ "fs");
 const config_manager_1 = __webpack_require__(/*! ../../../config/config-manager */ "./src/config/config-manager.ts");
 exports.default = {
     getObjectsFromMetaData: function () {
-        const p = path.join(vscode.workspace.rootPath, config_manager_1.default.getInstance().retrieveBackwardCompatibleRootFolder(), 'classes');
+        const p = path.join(config_manager_1.default.getInstance().getVSCodeRoot(), config_manager_1.default.getInstance().retrieveBackwardCompatibleRootFolder(), 'classes');
         const files = fs.readdirSync(p);
         if (files.length === 0) {
             throw Error('No Apex Class definition file was found in folder ' + p);
@@ -19362,12 +19361,11 @@ exports.default = ApexClassFile;
 Object.defineProperty(exports, "__esModule", { value: true });
 const ApexPageFile_1 = __webpack_require__(/*! ./structures/ApexPageFile */ "./src/commands/metadatamanagement/apexPages/structures/ApexPageFile.ts");
 const path = __webpack_require__(/*! path */ "path");
-const vscode = __webpack_require__(/*! vscode */ "vscode");
 const fs = __webpack_require__(/*! fs */ "fs");
 const config_manager_1 = __webpack_require__(/*! ../../../config/config-manager */ "./src/config/config-manager.ts");
 exports.default = {
     getObjectsFromMetaData: function () {
-        const p = path.join(vscode.workspace.rootPath, config_manager_1.default.getInstance().retrieveBackwardCompatibleRootFolder(), 'pages');
+        const p = path.join(config_manager_1.default.getInstance().getVSCodeRoot(), config_manager_1.default.getInstance().retrieveBackwardCompatibleRootFolder(), 'pages');
         const files = fs.readdirSync(p);
         if (files.length === 0) {
             throw Error('No Visualforce Page definition file was found in folder ' + p);
@@ -19425,7 +19423,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const ProfileFile_1 = __webpack_require__(/*! ./structures/ProfileFile */ "./src/commands/metadatamanagement/profiles/structures/ProfileFile.ts");
 const path = __webpack_require__(/*! path */ "path");
-const vscode = __webpack_require__(/*! vscode */ "vscode");
 const fs = __webpack_require__(/*! fs */ "fs");
 const xml2js = __webpack_require__(/*! xml2js */ "./node_modules/xml2js/lib/xml2js.js");
 const processors_1 = __webpack_require__(/*! xml2js/lib/processors */ "./node_modules/xml2js/lib/processors.js");
@@ -19434,7 +19431,7 @@ const utils_1 = __webpack_require__(/*! ../utils */ "./src/commands/metadatamana
 const config_manager_1 = __webpack_require__(/*! ../../../config/config-manager */ "./src/config/config-manager.ts");
 exports.default = {
     getObjectsFromMetaData: function () {
-        const p = path.join(vscode.workspace.rootPath, config_manager_1.default.getInstance().retrieveBackwardCompatibleRootFolder(), 'profiles');
+        const p = path.join(config_manager_1.default.getInstance().getVSCodeRoot(), config_manager_1.default.getInstance().retrieveBackwardCompatibleRootFolder(), 'profiles');
         const files = fs.readdirSync(p);
         if (files.length === 0) {
             throw Error('No Profile definition file was found in folder ' + p);
@@ -19874,7 +19871,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const SObjectFile_1 = __webpack_require__(/*! ./structures/SObjectFile */ "./src/commands/metadatamanagement/sObjects/structures/SObjectFile.ts");
 const path = __webpack_require__(/*! path */ "path");
-const vscode = __webpack_require__(/*! vscode */ "vscode");
 const fs = __webpack_require__(/*! fs */ "fs");
 const xml2js = __webpack_require__(/*! xml2js */ "./node_modules/xml2js/lib/xml2js.js");
 const processors_1 = __webpack_require__(/*! xml2js/lib/processors */ "./node_modules/xml2js/lib/processors.js");
@@ -19882,7 +19878,7 @@ const config_manager_1 = __webpack_require__(/*! ../../../config/config-manager 
 const utils_1 = __webpack_require__(/*! ../utils */ "./src/commands/metadatamanagement/utils.ts");
 exports.default = {
     getObjectsFromMetaData: function () {
-        const p = path.join(vscode.workspace.rootPath, config_manager_1.default.getInstance().retrieveBackwardCompatibleRootFolder(), 'objects');
+        const p = path.join(config_manager_1.default.getInstance().getVSCodeRoot(), config_manager_1.default.getInstance().retrieveBackwardCompatibleRootFolder(), 'objects');
         const files = fs.readdirSync(p, { withFileTypes: true });
         if (files.length === 0) {
             throw Error('No SObject definition file was found in folder ' + p);
@@ -20473,7 +20469,7 @@ const fs = __webpack_require__(/*! fs */ "fs");
 const MetadataStructure_1 = __webpack_require__(/*! ../commands/metadatamanagement/profiles/structures/MetadataStructure */ "./src/commands/metadatamanagement/profiles/structures/MetadataStructure.ts");
 class ConfigManager {
     constructor() {
-        this.getCfgPath = () => path.join(vscode.workspace.rootPath, '.swift-sfdc.json');
+        this.getCfgPath = () => path.join(this.getVSCodeRoot(), '.swift-sfdc.json');
         this._currentConfig = undefined;
         this.init();
     }
@@ -20484,28 +20480,33 @@ class ConfigManager {
         return this.instance;
     }
     retrieveBackwardCompatibleRootFolder() {
-        let projRoot = this.getConfig().projectRootFolder;
+        let projRoot = this.getConfig().sfRootFolder;
         if (!projRoot) {
-            this.setAntProjectStructure();
+            if (this.autodiscoverProjectStructure() === MetadataStructure_1.default.SF_Original) {
+                this.setAntProjectStructure(this.getConfig());
+            }
+            else {
+                this.setSFDXProjectStructure(this.getConfig());
+            }
         }
-        projRoot = this.getConfig().projectRootFolder;
+        projRoot = this.getConfig().sfRootFolder;
         return projRoot;
     }
-    setSFDXProjectStructure() {
-        this.getConfig().projectRootFolder = './force-app/main/default';
-        this.getConfig().metadataStructure = MetadataStructure_1.default.SF_SFDX;
-        this.getConfig().packageLocation = './manifest/';
+    setSFDXProjectStructure(config) {
+        config.sfRootFolder = './force-app/main/default';
+        config.metadataStructure = MetadataStructure_1.default.SF_SFDX;
+        config.packageLocation = './manifest/';
     }
-    setAntProjectStructure() {
-        this.getConfig().projectRootFolder = 'src';
-        this.getConfig().metadataStructure = MetadataStructure_1.default.SF_Original;
-        this.getConfig().packageLocation = './';
+    setAntProjectStructure(config) {
+        config.sfRootFolder = 'src';
+        config.metadataStructure = MetadataStructure_1.default.SF_Original;
+        config.packageLocation = './';
     }
     getConfig() {
         return this._currentConfig;
     }
     readConfig() {
-        if (vscode.workspace.rootPath && fs.existsSync(this.getCfgPath())) {
+        if (this.getVSCodeRoot() && fs.existsSync(this.getCfgPath())) {
             const storedCfg = fs.readFileSync(this.getCfgPath(), 'utf8');
             const cfg = JSON.parse(storedCfg);
             return cfg;
@@ -20513,7 +20514,8 @@ class ConfigManager {
         return undefined;
     }
     autodiscoverProjectStructure() {
-        if (fs.existsSync('./src/package.xml')) {
+        console.log('Autodiscoverying Project Structure..');
+        if (fs.existsSync(`${this.getVSCodeRoot()}/src/package.xml`)) {
             return MetadataStructure_1.default.SF_Original;
         }
         else {
@@ -20555,6 +20557,12 @@ class ConfigManager {
             if (config === undefined) {
                 console.log('Configuration not found, generating a new one');
                 config = new config_1.default();
+                if (this.autodiscoverProjectStructure() === MetadataStructure_1.default.SF_Original) {
+                    this.setAntProjectStructure(config);
+                }
+                else {
+                    this.setSFDXProjectStructure(config);
+                }
             }
             this.setConfig(config);
             this.storeConfig(this._currentConfig);
@@ -20573,6 +20581,9 @@ class ConfigManager {
         }
         this.setConfig(config);
         this.storeConfig(this._currentConfig);
+    }
+    getVSCodeRoot() {
+        return vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri.path;
     }
 }
 exports.default = ConfigManager;
@@ -20596,7 +20607,7 @@ class SwiftSfdcConfiguration {
         this.defaultProfiles = undefined;
         this.metadataStructure = MetadataStructure_1.default.SF_SFDX;
         this.packageLocation = './manifest/';
-        this.projectRootFolder = './force-app/main/default';
+        this.sfRootFolder = './force-app/main/default';
     }
 }
 exports.default = SwiftSfdcConfiguration;
