@@ -27,6 +27,8 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfilesUserPermissions', cmd.configureProfilesUserPermissions))
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureCrossProfileUserPermission', cmd.configureCrossProfileUserPermission))
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfilesFLS', cmd.configureProfilesFLS))
+  context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.resetConfig', cmd.resetConfig))
+  context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.reloadConfig', cmd.reloadConfig))
 
 
   vscode.commands.executeCommand('setContext', 'swift-sfdc-active', true)

@@ -26,6 +26,7 @@ async function fieldCreationWizard(otherFields: SObjectFieldDefinition[], availa
     try {
       const pickedFieldType = await pickSObjectFieldType()
       let obj: SObjectFieldDefinition = await SObjectFieldBuilders[pickedFieldType](forbiddenApiNames, availableSObjectsList)
+      obj.isNew = true
       resolve(obj)
     } catch (err) {
       reject(err)
@@ -49,11 +50,12 @@ export default async function createField() {
 
     const objectDefinition: any = await sObjFileMgr.readSObjectDefinitionFile(pickedSObject)
     const sObjectFieldDefinition: SObjectFieldDefinition = await fieldCreationWizard(objectDefinition.CustomObject.fields, SObjectFiles.map(file => file.label))
+    
 
     objectDefinition.CustomObject.fields.push(sObjectFieldDefinition)
     objectDefinition.CustomObject.fields.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))
 
-    sObjFileMgr.writeSObjectDefinitionFile(path.join(pickedSObject.folder.toString(), pickedSObject.fileName), objectDefinition)
+    await sObjFileMgr.writeSObjectDefinitionFile(pickedSObject, objectDefinition)
 
     if (pickedSObject.sObjectType === SObjectType.SObject) {
       ProfilesFileMgr.updateProfilesVisibilityForField(ConfigManager.getInstance().getConfig().defaultProfiles || [], [{ sObject: pickedSObject, fields: [sObjectFieldDefinition] }], AccessType.edit)

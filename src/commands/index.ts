@@ -5,6 +5,8 @@ import configureProfilesApexPages from './configure-profiles-apex-pages'
 import configureProfilesUserPermissions from './configure-profiles-user-permissions'
 import configureCrossProfileUserPermission from './configure-cross-profile-user-permission'
 import configureProfilesFLS from './configure-profiles-fls'
+import resetConfig from './reset-config'
+import reloadConfig from './reload-config'
 
 export default {
   createField,
@@ -13,5 +15,7 @@ export default {
   configureProfilesApexPages,
   configureProfilesUserPermissions,
   configureCrossProfileUserPermission,
-  configureProfilesFLS
+  configureProfilesFLS,
+  resetConfig,
+  reloadConfig
 }

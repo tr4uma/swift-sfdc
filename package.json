@@ -18,13 +18,14 @@
   },
   "license": "MIT",
   "engines": {
-    "vscode": "^1.35.0"
+    "vscode": "^1.37.0"
   },
   "categories": [
     "Other"
   ],
   "activationEvents": [
-    "workspaceContains:**/src/package.xml"
+    "workspaceContains:**/src/package.xml",
+    "workspaceContains:**/manifest/package.xml"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -63,6 +64,16 @@
         "command": "SwiftSfdc.configureProfilesFLS",
         "title": "Configure Profiles > Field-Level Security",
         "category": "💫 SwiftSFDC"
+      },
+      {
+        "command": "SwiftSfdc.resetConfig",
+        "title": "Reset SwiftSFDC Configuration",
+        "category": "💫 SwiftSFDC"
+      },
+      {
+        "command": "SwiftSfdc.reloadConfig",
+        "title": "Reload SwiftSFDC Configuration from Config File",
+        "category": "💫 SwiftSFDC"
       }
     ],
     "menus": {
@@ -94,6 +105,14 @@
         {
           "command": "SwiftSfdc.configureProfilesFLS",
           "when": "swift-sfdc-active"
+        },
+        {
+          "command": "SwiftSfdc.resetConfig",
+          "when": "swift-sfdc-active"
+        },
+        {
+          "command": "SwiftSfdc.reloadConfig",
+          "when": "swift-sfdc-active"
         }
       ]
     },
@@ -111,6 +130,7 @@
         "id": "xml",
         "extensions": [
           ".object",
+          ".object-meta",
           ".layout",
           ".resource",
           ".remoteSite",
@@ -172,7 +192,7 @@
     "ts-loader": "^6.0.4",
     "tslint": "^5.12.1",
     "typescript": "^3.5.3",
-    "vscode": "^1.1.28",
+    "vscode": "^1.1.37",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7"
   },

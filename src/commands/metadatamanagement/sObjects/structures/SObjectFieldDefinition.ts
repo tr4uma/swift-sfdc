@@ -27,6 +27,7 @@ interface SObjectFieldDefinition {
   //description: string
   //inlineHelpText: string
   //displayFormat: string
+  isNew?: boolean //for internal purposes
 }
 
 export default SObjectFieldDefinition
