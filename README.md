@@ -2,6 +2,15 @@
 
 ## 👉🏼 Please rate/review the extension to show support! 👈🏼 
 
+## 🔥 NOW compatible with SFDX Project Structure & configurable project root folder!🔥
+
+UPDATE: it is now possible to configure the project root folder in the .swift-sfdc configuration file.
+For backward compatibility, at first commands usage the extension will try to guess which project structure (old "ant" or newer "sfdx" structures) and store it inside its config file.
+Also a couple new commands for resetting/reloading the config are available.
+The project structure can then be updated if the guess was wrong or if it changes over time
+
+## Intro
+
 Do you ever feel like working with the salesforce.com platform wastes a lot of time?
 Are you tired of switching continuously between the IDE and the platform to create (and retrieve!) the metadata you need?
 
@@ -16,6 +25,8 @@ Feel free to integrate swift-sfdc with other extensions, like ForceCode or Maven
 swift-sfdc is designed to interact with the standard salesforce project structure which you can download using tools like ant, mavensmate or forcecode, where every metadata type is contained within a subfolder of the /src/ root folder:
 
 ![Folder Structure](/images/folder_structure.png)
+
+### UPDATE: Compatible with SFDX Project structure! 🔥
 
 Given this folder structure to your project, the extension is then able to interact with the XML metadata definitions provided by the salesforce API.
 You're then free to use your favourite deployment tool to update the code in your org. (Metadata deployment coming soon!)
