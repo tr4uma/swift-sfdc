@@ -2,8 +2,9 @@
 
 All notable changes to the "swift-sfdc" extension will be documented in this file.
 
-###
-1.0.1
+### 1.0.2
+Minor bugfix on extension activation
+### 1.0.1
 Minor bugfix on extension activation
 ### 1.0.0
 Added compatibility with SFDC project structure and configurable root folder
