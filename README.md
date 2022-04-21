@@ -86,7 +86,8 @@ Edit your profiles' Field-Level Security directly from the extension. It support
 
 Speed up your documenting process with this feature!
 By just selecting the entities you wish to include in the graph, this feature traces their relationships and produces an output .xml file which can be easily drag&dropped into diagrams.net, displaying the selected SObjects, their relationships with each other and the master-detail/lookup fields which link them together!
-NOTE: the entities are overlapped with each other when they get imported, so you can place them whenever you want. Good-looking placing algorithm will be available in the future.
+
+NOTE: the entities are overlapped with each other when they get imported, so you can place them wherever you want. Good-looking placing algorithm will be available in the future.
 
 ## Known Issues
 
