@@ -8,6 +8,14 @@ async function askConfirmation(): Promise<boolean> {
     })
 }
 
+async function askIfWantsToSelect(): Promise<boolean> {
+  return new Promise(async (resolve, reject) => {
+      const confirmed = await vscode.window.showQuickPick([{ label: 'Yes', value: true }, { label: 'No', value: false }], { ignoreFocusOut: true, placeHolder: 'Would you like to select the relationships to extract?' })
+      confirmed ? resolve(confirmed.value) : reject('Operation Aborted')
+  })
+}
+
 export default {
-  confirmation: askConfirmation
+  confirmation: askConfirmation,
+  selectRels: askIfWantsToSelect
 }

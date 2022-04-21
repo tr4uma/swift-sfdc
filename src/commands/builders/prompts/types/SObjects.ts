@@ -8,11 +8,28 @@ async function pickSObjectType(sObjectDefinitions: SObjectFile[]): Promise<SObje
     if (res !== undefined) {
       resolve(res)
     } else {
-      reject('SObject Selection Aborted')
+      reject('SObject selection Aborted')
+    }
+  })
+}
+
+async function pickSObjectTypes(sObjectDefinitions: SObjectFile[]): Promise<SObjectFile[]> {
+
+  const sobjOptions = sObjectDefinitions.map(sobj => {
+    return { ...sobj, picked: false }
+  })
+
+  return new Promise(async (resolve, reject) => {
+    const res: SObjectFile[] | undefined = await vscode.window.showQuickPick(sobjOptions, { ignoreFocusOut: true, placeHolder: 'Pick SObjects to include in the diagram', canPickMany: true })
+    if (res !== undefined) {
+      resolve(res)
+    } else {
+      reject('SObjects selection Aborted')
     }
   })
 }
 
 export default {
-  pickOne: pickSObjectType
+  pickOne: pickSObjectType,
+  pickMany: pickSObjectTypes
 }

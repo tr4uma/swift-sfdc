@@ -29,6 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.configureProfilesFLS', cmd.configureProfilesFLS))
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.resetConfig', cmd.resetConfig))
   context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.reloadConfig', cmd.reloadConfig))
+  context.subscriptions.push(vscode.commands.registerCommand('SwiftSfdc.generateEntityDiagram', cmd.generateEntityDiagram))
 
 
   vscode.commands.executeCommand('setContext', 'swift-sfdc-active', true)

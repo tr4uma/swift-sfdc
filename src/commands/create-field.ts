@@ -1,5 +1,4 @@
 import * as vscode from 'vscode'
-import * as path from 'path'
 import SObjectFile from './metadatamanagement/sObjects/structures/SObjectFile'
 import SObjectFieldType from './metadatamanagement/sObjects/structures/SObjectFieldType'
 import SObjectFieldDefinition from './metadatamanagement/sObjects/structures/SObjectFieldDefinition'
@@ -12,13 +11,6 @@ import utils from './metadatamanagement/utils'
 import Prompts from './builders/prompts/Prompts'
 import { SObjectType } from './metadatamanagement/sObjects/structures/SObjectType'
 import Monitor from '../monitoring/monitor'
-
-
-// SFDC Metadata types selection
-async function pickSObjectType(sObjectDefinitions: SObjectFile[]): Promise<SObjectFile | undefined> {
-  const res: SObjectFile | undefined = await vscode.window.showQuickPick(sObjectDefinitions, { ignoreFocusOut: true, placeHolder: 'Select an SObject Type' })
-  return res
-}
 
 async function fieldCreationWizard(otherFields: SObjectFieldDefinition[], availableSObjectsList: string[]): Promise<SObjectFieldDefinition> {
   let forbiddenApiNames = otherFields.map(field => field.fullName)

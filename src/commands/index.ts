@@ -7,6 +7,7 @@ import configureCrossProfileUserPermission from './configure-cross-profile-user-
 import configureProfilesFLS from './configure-profiles-fls'
 import resetConfig from './reset-config'
 import reloadConfig from './reload-config'
+import generateEntityDiagram from './generate-entity-diagram'
 
 export default {
   createField,
@@ -17,5 +18,6 @@ export default {
   configureCrossProfileUserPermission,
   configureProfilesFLS,
   resetConfig,
-  reloadConfig
+  reloadConfig,
+  generateEntityDiagram
 }

@@ -9,6 +9,7 @@ For backward compatibility, at first commands usage the extension will try to gu
 Also a couple new commands for resetting/reloading the config are available.
 The project structure can then be updated if the guess was wrong or if it changes over time
 
+## 🔥 Check Diagrams.net diagram export feature down below! 🔥
 ## Intro
 
 Do you ever feel like working with the salesforce.com platform wastes a lot of time?
@@ -30,6 +31,7 @@ swift-sfdc is designed to interact with the standard salesforce project structur
 
 Given this folder structure to your project, the extension is then able to interact with the XML metadata definitions provided by the salesforce API.
 You're then free to use your favourite deployment tool to update the code in your org. (Metadata deployment coming soon!)
+Check github repository's "samples" folder for sample configurations!
 
 ## Features
 
@@ -80,6 +82,12 @@ Edit your profiles' Field-Level Security directly from the extension. It support
 
 ![Field-Level Security](/images/fls_mgmt.png)
 
+### BETA: Diagrams.net Entity Diagram Generation 🔥
+
+Speed up your documenting process with this feature!
+By just selecting the entities you wish to include in the graph, this feature traces their relationships and produces an output .xml file which can be easily drag&dropped into diagrams.net, displaying the selected SObjects, their relationships with each other and the master-detail/lookup fields which link them together!
+NOTE: the entities are overlapped with each other when they get imported, so you can place them whenever you want. Good-looking placing algorithm will be available in the future.
+
 ## Known Issues
 
 User Permission list might be outdated/not complete, feel free to pull request!
@@ -89,3 +97,6 @@ User Permission list might be outdated/not complete, feel free to pull request!
 ## Release Notes
 
 See CHANGELOG file
+
+## Disclaimer
+salesforce.com and diagrams.net are owned by their respective companies and not managed by me, any kind of integration might stop working if they change their file formats/structure at any time.

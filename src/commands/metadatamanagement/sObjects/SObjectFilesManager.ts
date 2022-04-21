@@ -38,14 +38,31 @@ export default {
         }
       } else {
         const fields = fs.readdirSync(path.join(filePath, 'fields'))
-        let objDef = { CustomObject: {  fields: [] as any } } //fake SObject definition cause we only care about fields
+        const objFilePath = path.join(objDef.folder.toString(), objDef.fileName, `${objDef.fileName}.object-meta.xml`)
+        let parsedFile: any
+        try {
+          const xmlParser = new xml2js.Parser({ explicitArray: false, valueProcessors: [parseBooleans] })
+          if(!fs.existsSync(objFilePath)) throw new Error(`File ${objFilePath} was not found`)
+          const fileContent = fs.readFileSync(objFilePath, { encoding: 'utf-8' })
+          parsedFile = await new Promise((resolve, reject) => {
+            xmlParser.parseString(fileContent, (err: any, result: any) => {
+              if (err) { reject(err) }
+              else { resolve(result) }
+            })
+          })
+        } catch (err) {
+          resolve({ CustomObject: { fields: [] as any } })
+        }
+        let sObjDef = parsedFile
+        if (sObjDef === undefined) {
+          sObjDef = { CustomObject: { fields: [] as any } }
+        }
         const fieldsArr = await Promise.all(fields.map(field => {
           return new Promise((resolve, reject) => {
             const fileContent = fs.readFileSync(path.join(filePath, 'fields', field), { encoding: 'utf-8' })
-            const xmlParser = new xml2js.Parser({ explicitArray: false, valueProcessors: [parseBooleans] })
+            const xmlParserFields = new xml2js.Parser({ explicitArray: false, valueProcessors: [parseBooleans] })
             try {
-              const parsedFile: any = xmlParser.parseString(fileContent, (err: any, result: any) => {
-                console.log(result)
+              const parsedFile: any = xmlParserFields.parseString(fileContent, (err: any, result: any) => {
                 if (err) { reject(err) }
                 else { resolve(result.CustomField) }
               })
@@ -54,9 +71,9 @@ export default {
             }
           })
         }))
-        objDef.CustomObject.fields = fieldsArr
-        objDef.CustomObject.fields.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))
-        resolve(objDef)
+        sObjDef.CustomObject.fields = fieldsArr
+        sObjDef.CustomObject.fields.sort((a: any, b: any) => utils.sortItemsByField(a, b, 'fullName'))
+        resolve(sObjDef)
         
       }
     })

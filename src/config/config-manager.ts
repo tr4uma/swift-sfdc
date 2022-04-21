@@ -38,7 +38,7 @@ export default class ConfigManager {
   private setSFDXProjectStructure(config: SwiftSfdcConfiguration) {
     config.sfRootFolder = './force-app/main/default'
     config.metadataStructure = MetadataStructure.SF_SFDX
-    config.packageLocation = './manifest/'
+    config.packageLocation = './manifest'
   }
 
   private setAntProjectStructure(config: SwiftSfdcConfiguration) {

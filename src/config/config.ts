@@ -4,7 +4,7 @@ import MetadataStructure from "../commands/metadatamanagement/profiles/structure
 export default class SwiftSfdcConfiguration {
   defaultProfiles: ProfileFile[] | undefined = undefined
   metadataStructure: MetadataStructure | undefined = MetadataStructure.SF_SFDX
-  packageLocation: string =  './manifest/'
+  packageLocation: string =  './manifest'
   sfRootFolder: string = './force-app/main/default'
   constructor() {
   }
