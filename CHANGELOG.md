@@ -2,7 +2,7 @@
 
 All notable changes to the "swift-sfdc" extension will be documented in this file.
 
-### 1.0.3
+### 1.1.0
 Added diagrams.net diagram generation beta feature
 ### 1.0.2
 Minor bugfix on extension activation
