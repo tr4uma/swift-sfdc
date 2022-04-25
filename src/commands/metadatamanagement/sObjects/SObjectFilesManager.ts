@@ -37,7 +37,8 @@ export default {
           reject(err)
         }
       } else {
-        const fields = fs.readdirSync(path.join(filePath, 'fields'))
+        
+        const fields = fs.existsSync(path.join(filePath, 'fields')) ? fs.readdirSync(path.join(filePath, 'fields')) : []
         const objFilePath = path.join(objDef.folder.toString(), objDef.fileName, `${objDef.fileName}.object-meta.xml`)
         let parsedFile: any
         try {

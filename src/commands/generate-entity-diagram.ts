@@ -30,7 +30,7 @@ async function pickRelationships(entity: any): Promise<any[]> {
 }
 
 // Main functionality
-export default async function resetConfig() {
+export default async function generateDiagram() {
   Monitor.getInstance().sendEvent('generateER')
   try {
     const SObjectFiles = await sObjFileMgr.getObjectsFromMetaData()
@@ -42,7 +42,7 @@ export default async function resetConfig() {
         entityName: sObj.label,
         parents: sObjDef.CustomObject.fields.filter((field: { type: any; referenceTo: any; fullName: any }) => {
           let parentName = field.referenceTo
-          if((field.type === 'Lookup' || field.type === 'MasterDetail') && parentName === undefined) parentName = field.fullName.substring(0, field.fullName.length - 2)
+          if((field.type === 'Lookup' || field.type === 'MasterDetail') && parentName === undefined) { parentName = field.fullName.substring(0, field.fullName.length - 2) }
           return parentName !== undefined && selectedSObjectNames.has(parentName) && (field.type === 'Lookup' || field.type === 'MasterDetail')
         }).map((field: { referenceTo: any; fullName: any }) => {
           return {

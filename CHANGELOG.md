@@ -2,6 +2,10 @@
 
 All notable changes to the "swift-sfdc" extension will be documented in this file.
 
+### 1.2.3
+Diagram generation feature now places entities in a circle and places arrows properly.
+### 1.2.2
+Readme bugfix
 ### 1.2.1
 Readme bugfix
 ### 1.2.0
